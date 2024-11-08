@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Link from "next/link";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ModeToggle } from "@/components/mode-toggle";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,14 +27,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <nav>
-          <Link href="/">Home</Link>
-          <Link href="/spendings">Spendings</Link>
-          <Link href="/calendar">Calendar</Link>
-        </nav>
-        {children}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <nav>
+            <Link href="/">Home</Link>
+            <Link href="/spendings">Spendings</Link>
+            <Link href="/calendar">Calendar</Link>
+            <ModeToggle />
+          </nav>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
