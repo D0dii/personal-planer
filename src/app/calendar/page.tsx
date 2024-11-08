@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div>Calendar</div>;
+  return <main>Calendar</main>;
 }
