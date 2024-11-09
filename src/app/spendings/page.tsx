@@ -4,43 +4,42 @@ import React from "react";
 import { Spending } from "../types/spending";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { SpendingItem } from "@/components/spending-item";
 
 export default function Home() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
-  const [spendings, setSpendings] = React.useState<Spending[]>([]);
+  const { value: spendings, setNewValue: setSpendings } = useLocalStorage<Spending[]>(
+    date?.toDateString() as string
+  );
   const addSpending = (formData: FormData) => {
     const description = formData.get("description") as string;
     const amount = Number(formData.get("amount"));
     const newSpending = {
+      id: crypto.randomUUID(),
       description,
       amount,
       date: date?.toDateString() as string,
     } satisfies Spending;
-    setSpendings((prevSpendings) => [...prevSpendings, newSpending]);
-    localStorage.setItem(date?.toDateString() as string, JSON.stringify([...spendings, newSpending]));
+    setSpendings([...spendings, newSpending]);
   };
-  React.useEffect(() => {
-    if (date) {
-      setSpendings(JSON.parse(localStorage.getItem(date?.toDateString()) as string) ?? []);
-    } else {
-      setSpendings([]);
-    }
-  }, [date]);
+  const removeSpending = (spendingId: string) => {
+    const newSpendings = spendings?.filter((prevSpending) => prevSpending.id !== spendingId);
+    setSpendings(newSpendings);
+  };
   return (
-    <main className="flex flex-col">
+    <main className="flex flex-col px-32 lg:px-80">
       <h1>Here is a list of your todays spendings:</h1>
+      <h2>Today you have spent ${spendings.reduce((prev, curr) => prev + curr.amount, 0)}</h2>
       <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border" />
-      <ul>
+      <div className="flex flex-col gap-2">
         {spendings?.map((spending) => (
-          <li key={spending.description}>
-            <p>{spending.description}</p>
-            <p>{spending.amount}</p>
-          </li>
+          <SpendingItem key={spending.id} spending={spending} removeSpending={removeSpending} />
         ))}
-      </ul>
+      </div>
       <form action={addSpending}>
         <Input type="text" placeholder="Description" name="description" />
-        <Input type="number" placeholder="Amount" name="amount" />
+        <Input type="number" step="0.01" placeholder="Amount" name="amount" />
         <Button type="submit">Add</Button>
       </form>
     </main>
