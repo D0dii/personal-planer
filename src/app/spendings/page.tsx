@@ -11,7 +11,7 @@ export default function Home() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   const { value: spendings, setNewValue: setSpendings } = useLocalStorage<Spending[]>(
     date?.toDateString() as string,
-    []
+    React.useMemo(() => [], [])
   );
   const addSpending = (formData: FormData) => {
     const description = formData.get("description") as string;
