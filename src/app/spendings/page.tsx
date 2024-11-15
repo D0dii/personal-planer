@@ -5,7 +5,7 @@ import { Spending } from "../types/spending";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { SpendingItem } from "@/components/spending-item";
+import { SpendingsTable } from "@/components/spendings-table";
 
 export default function Home() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
@@ -29,20 +29,21 @@ export default function Home() {
     setSpendings(newSpendings);
   };
   return (
-    <main className="flex flex-col px-32 lg:px-80">
-      <h1>Here is a list of your todays spendings:</h1>
-      <h2>Today you have spent ${spendings.reduce((prev, curr) => prev + curr.amount, 0)}</h2>
-      <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border" />
-      <div className="flex flex-col gap-2">
-        {spendings?.map((spending) => (
-          <SpendingItem key={spending.id} spending={spending} removeSpending={removeSpending} />
-        ))}
+    <main className="flex flex-col items-center mt-8">
+      <h1 className="text-5xl mb-8">List of your todays spendings</h1>
+      <div className="flex justify-center gap-28 w-full">
+        <div className="flex flex-col gap-8">
+          <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border" />
+          <form action={addSpending} className="flex flex-col gap-4">
+            <Input type="text" placeholder="Description" name="description" />
+            <Input type="number" step="0.01" placeholder="Amount" name="amount" />
+            <Button type="submit">Add</Button>
+          </form>
+        </div>
+        <div className="h-[70vh] overflow-auto">
+          <SpendingsTable spendings={spendings} removeSpending={removeSpending} />
+        </div>
       </div>
-      <form action={addSpending}>
-        <Input type="text" placeholder="Description" name="description" />
-        <Input type="number" step="0.01" placeholder="Amount" name="amount" />
-        <Button type="submit">Add</Button>
-      </form>
     </main>
   );
 }
