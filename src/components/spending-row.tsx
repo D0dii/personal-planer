@@ -16,40 +16,41 @@ const SpendingRow = ({
 }) => {
   const [descriptionValue, setDescriptionValue] = React.useState(spending.description);
   const [amountValue, setAmountValue] = React.useState(spending.amount);
-  const [timer, setTimer] = React.useState<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const descriptionChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDescriptionValue(e.target.value);
-
-    clearTimeout(timer);
-
-    const newTimer = setTimeout(() => {
-      updateSpending(spending.id, { ...spending, description: e.target.value });
-    }, 500);
-
-    setTimer(newTimer);
+  const debounceUpdate = (callback: () => void, delay: number) => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    timerRef.current = setTimeout(callback, delay);
   };
 
-  const amountChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmountValue(Number(e.target.value));
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newDescription = e.target.value;
+    setDescriptionValue(newDescription);
 
-    clearTimeout(timer);
+    debounceUpdate(() => {
+      updateSpending(spending.id, { ...spending, description: newDescription });
+    }, 300);
+  };
 
-    const newTimer = setTimeout(() => {
-      updateSpending(spending.id, { ...spending, amount: Number(e.target.value) });
-    }, 500);
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newAmount = Number(e.target.value);
+    setAmountValue(newAmount);
 
-    setTimer(newTimer);
+    debounceUpdate(() => {
+      updateSpending(spending.id, { ...spending, amount: newAmount });
+    }, 300);
   };
 
   return (
     <TableRow key={spending.id}>
       <TableCell className="font-medium">
-        <Input value={descriptionValue} onChange={descriptionChanged} />
+        <Input value={descriptionValue} onChange={handleDescriptionChange} />
       </TableCell>
       <TableCell>{spending.date}</TableCell>
       <TableCell className="text-right">
-        <Input type="number" value={amountValue} onChange={amountChanged} />
+        <Input type="number" value={amountValue} onChange={handleAmountChange} />
       </TableCell>
       <TableCell>
         <Button onClick={() => removeSpending(spending.id)}>Remove</Button>
