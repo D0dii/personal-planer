@@ -1,13 +1,15 @@
 import { Spending } from "@/app/types/spending";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "./ui/table";
-import { Button } from "./ui/button";
+import { SpendingRow } from "./spending-row";
 
 const SpendingsTable = ({
   spendings,
   removeSpending,
+  updateSpending,
 }: {
   spendings: Spending[];
   removeSpending: (spendingId: string) => void;
+  updateSpending: (spendingId: string, updatedSpending: Spending) => void;
 }) => {
   return (
     <Table>
@@ -20,14 +22,12 @@ const SpendingsTable = ({
       </TableHeader>
       <TableBody>
         {spendings.map((spending) => (
-          <TableRow key={spending.id}>
-            <TableCell className="font-medium">{spending.description}</TableCell>
-            <TableCell>{spending.date}</TableCell>
-            <TableCell className="text-right">{spending.amount}</TableCell>
-            <TableCell>
-              <Button onClick={() => removeSpending(spending.id)}>Remove</Button>
-            </TableCell>
-          </TableRow>
+          <SpendingRow
+            key={spending.id}
+            spending={spending}
+            removeSpending={removeSpending}
+            updateSpending={updateSpending}
+          />
         ))}
       </TableBody>
       <TableFooter>
