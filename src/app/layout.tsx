@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex h-full antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -39,9 +39,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <div className="m-8 ml-0 w-full bg-gray-300 dark:bg-black">
+          <main className="m-8 ml-0 w-full bg-gray-300 dark:bg-black">
             {children}
-          </div>
+          </main>
         </ThemeProvider>
       </body>
     </html>

@@ -49,9 +49,9 @@ export default function Home() {
     setSpendings(newSpendings);
   };
   return (
-    <main className="mt-8 flex flex-col items-center">
+    <div className="flex flex-col items-center pb-8 pt-8 md:px-10">
       <h1 className="mb-8 text-5xl">List of your todays spendings</h1>
-      <div className="flex w-full justify-center gap-28">
+      <div className="flex w-full flex-col justify-center gap-28 md:flex-row">
         <div className="flex flex-col gap-8">
           <Calendar
             mode="single"
@@ -78,6 +78,6 @@ export default function Home() {
           />
         </div>
       </div>
-    </main>
+    </div>
   );
 }
