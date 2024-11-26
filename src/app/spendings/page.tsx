@@ -1,17 +1,22 @@
 "use client";
-import { Calendar } from "@/components/ui/calendar";
+
 import React from "react";
-import { Spending } from "../types/spending";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+
 import { SpendingsTable } from "@/components/spendings-table";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+
+import { Spending } from "../types/spending";
 
 export default function Home() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
-  const { value: spendings, setNewValue: setSpendings } = useLocalStorage<Spending[]>(
+  const { value: spendings, setNewValue: setSpendings } = useLocalStorage<
+    Spending[]
+  >(
     date?.toDateString() as string,
-    React.useMemo(() => [], [])
+    React.useMemo(() => [], []),
   );
   const handleDateChange = (date: Date | undefined) => {
     if (date === undefined) return;
@@ -26,28 +31,42 @@ export default function Home() {
       description,
       amount,
       date: date?.toDateString() as string,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     } satisfies Spending;
     setSpendings([...spendings, newSpending]);
   };
   const removeSpending = (spendingId: string) => {
-    const newSpendings = spendings?.filter((prevSpending) => prevSpending.id !== spendingId);
+    const newSpendings = spendings?.filter(
+      (prevSpending) => prevSpending.id !== spendingId,
+    );
     setSpendings(newSpendings);
   };
   const updateSpending = (spendingId: string, updatedSpending: Spending) => {
     const newSpendings = spendings?.map((prevSpending) =>
-      prevSpending.id === spendingId ? updatedSpending : prevSpending
+      prevSpending.id === spendingId ? updatedSpending : prevSpending,
     );
     setSpendings(newSpendings);
   };
   return (
-    <main className="flex flex-col items-center mt-8">
-      <h1 className="text-5xl mb-8">List of your todays spendings</h1>
-      <div className="flex justify-center gap-28 w-full">
+    <main className="mt-8 flex flex-col items-center">
+      <h1 className="mb-8 text-5xl">List of your todays spendings</h1>
+      <div className="flex w-full justify-center gap-28">
         <div className="flex flex-col gap-8">
-          <Calendar mode="single" selected={date} onSelect={handleDateChange} className="rounded-md border" />
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={handleDateChange}
+            className="rounded-md border"
+          />
           <form action={addSpending} className="flex flex-col gap-4">
             <Input type="text" placeholder="Description" name="description" />
-            <Input type="number" step="0.01" placeholder="Amount" name="amount" />
+            <Input
+              type="number"
+              step="0.01"
+              placeholder="Amount"
+              name="amount"
+            />
             <Button type="submit">Add</Button>
           </form>
         </div>

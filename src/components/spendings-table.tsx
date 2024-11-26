@@ -1,6 +1,15 @@
 import { Spending } from "@/app/types/spending";
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "./ui/table";
+
 import { SpendingRow } from "./spending-row";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./ui/table";
 
 const SpendingsTable = ({
   spendings,

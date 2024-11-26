@@ -1,9 +1,12 @@
 "use client";
+
+import React from "react";
+
 import { Spending } from "@/app/types/spending";
+
+import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { TableCell, TableRow } from "./ui/table";
-import { Button } from "./ui/button";
-import React from "react";
 
 const SpendingRow = ({
   spending,
@@ -14,7 +17,9 @@ const SpendingRow = ({
   removeSpending: (spendingId: string) => void;
   updateSpending: (spendingId: string, updatedSpending: Spending) => void;
 }) => {
-  const [descriptionValue, setDescriptionValue] = React.useState(spending.description);
+  const [descriptionValue, setDescriptionValue] = React.useState(
+    spending.description,
+  );
   const [amountValue, setAmountValue] = React.useState(spending.amount);
   const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -30,7 +35,11 @@ const SpendingRow = ({
     setDescriptionValue(newDescription);
 
     debounceUpdate(() => {
-      updateSpending(spending.id, { ...spending, description: newDescription });
+      updateSpending(spending.id, {
+        ...spending,
+        description: newDescription,
+        updatedAt: new Date(),
+      });
     }, 300);
   };
 
@@ -39,7 +48,11 @@ const SpendingRow = ({
     setAmountValue(newAmount);
 
     debounceUpdate(() => {
-      updateSpending(spending.id, { ...spending, amount: newAmount });
+      updateSpending(spending.id, {
+        ...spending,
+        amount: newAmount,
+        updatedAt: new Date(),
+      });
     }, 300);
   };
 
@@ -50,7 +63,11 @@ const SpendingRow = ({
       </TableCell>
       <TableCell>{spending.date}</TableCell>
       <TableCell className="text-right">
-        <Input type="number" value={amountValue} onChange={handleAmountChange} />
+        <Input
+          type="number"
+          value={amountValue}
+          onChange={handleAmountChange}
+        />
       </TableCell>
       <TableCell>
         <Button onClick={() => removeSpending(spending.id)}>Remove</Button>

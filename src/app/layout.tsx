@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
+
 import { Navbar } from "@/components/navbar";
+import { ThemeProvider } from "@/components/theme-provider";
+
+import "./globals.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,10 +29,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="h-full">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex h-full`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} flex h-full antialiased`}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <Navbar />
-          <div className="w-full m-8 ml-0 dark:bg-black bg-gray-300">{children}</div>
+          <div className="m-8 ml-0 w-full bg-gray-300 dark:bg-black">
+            {children}
+          </div>
         </ThemeProvider>
       </body>
     </html>
