@@ -4,9 +4,8 @@ import { Calendar, CreditCardIcon, HomeIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Footer } from "@/components/footer";
+import { ModeToggle } from "@/components/mode-toggle";
 import { useActivePath } from "@/hooks/useActivePath";
-
-import { ModeToggle } from "./mode-toggle";
 
 const Navbar = () => {
   const checkActivePath = useActivePath();

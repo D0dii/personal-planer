@@ -3,8 +3,7 @@
 import React from "react";
 
 import { Spending } from "@/app/types/spending";
-
-import { LoadingSkeleton } from "./loading-skeleton";
+import { LoadingSkeleton } from "@/components/loading-skeleton";
 import {
   Table,
   TableBody,
@@ -12,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
+} from "@/components/ui/table";
 
 const getRecentExpenses = () => {
   const today = new Date();

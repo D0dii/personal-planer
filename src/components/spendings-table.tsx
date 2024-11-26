@@ -1,6 +1,5 @@
 import { Spending } from "@/app/types/spending";
-
-import { SpendingRow } from "./spending-row";
+import { SpendingRow } from "@/components/spending-row";
 import {
   Table,
   TableBody,
@@ -9,7 +8,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
+} from "@/components/ui/table";
 
 const SpendingsTable = ({
   spendings,
