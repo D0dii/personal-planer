@@ -1,20 +1,19 @@
-import { Chart } from "@/components/chart";
-import { InfoBlock } from "@/components/info-block";
 import { RecentSpendings } from "@/components/recent-spendings";
 import { SpendingsInfo } from "@/components/spendings-info";
+import { WeeklySpendingsChart } from "@/components/weekly-spendings-chart";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center pb-8">
-      <h1 className="mb-20 mt-8 text-5xl">Welcome to Personal Planer!</h1>
-      <h2 className="mb-14 text-4xl">So far you have made:</h2>
-      <div className="flex flex-col items-center justify-center gap-12 md:flex-row">
-        <InfoBlock title="Spendings" number={450} href="/spendings" />
-        <InfoBlock title="Events" number={320} href="/calendar" />
+    <main className="mt-10 flex flex-col items-center gap-6 px-10 pb-8">
+      <div className="flex w-full gap-20">
+        <RecentSpendings />
+        <RecentSpendings />
       </div>
-      <RecentSpendings />
-      <Chart />
-      <SpendingsInfo />
+      <div className="flex w-full gap-20">
+        <SpendingsInfo />
+        <SpendingsInfo />
+      </div>
+      <WeeklySpendingsChart />
     </main>
   );
 }

@@ -9,7 +9,6 @@ interface SpendingDay {
   amount: number;
 }
 
-//Mon Nov 25 2024
 const calcuateDailyExpensesFromMonth = () => {
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
@@ -37,10 +36,12 @@ const SpendingsInfo = () => {
   React.useEffect(() => {
     setTotalExpenses(calcuateDailyExpensesFromMonth());
   }, []);
-  console.log(totalExpenses);
   return (
-    <div>
-      {totalExpenses.reduce((sum, spending) => sum + spending.amount, 0)}
+    <div className="flex w-full items-baseline gap-5 self-start rounded-lg bg-zinc-900 p-10">
+      <h2 className="text-xl">In this month you have spent </h2>
+      <span className="text-3xl">
+        ${totalExpenses.reduce((sum, spending) => sum + spending.amount, 0)}
+      </span>
     </div>
   );
 };

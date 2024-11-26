@@ -31,8 +31,8 @@ export default function Home() {
       description,
       amount,
       date: date?.toDateString() as string,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString() as string,
+      updatedAt: new Date().toISOString() as string,
     } satisfies Spending;
     setSpendings([...spendings, newSpending]);
   };

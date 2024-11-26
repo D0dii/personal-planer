@@ -11,7 +11,6 @@ interface SpendingDay {
   amount: number;
 }
 
-//Mon Nov 25 2024
 const getLastWeekExpenses = () => {
   const today = new Date();
   const totalExpenses: SpendingDay[] = [];
@@ -35,18 +34,21 @@ const getLastWeekExpenses = () => {
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
+    label: "Expenses",
     color: "#2563eb",
   },
 } satisfies ChartConfig;
 
-const Chart = () => {
+const WeeklySpendingsChart = () => {
   const [totalExpenses, setTotalExpenses] = React.useState([] as SpendingDay[]);
   React.useEffect(() => {
     setTotalExpenses(getLastWeekExpenses());
   }, []);
   return (
-    <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+    <ChartContainer
+      config={chartConfig}
+      className="max-h-[300px] min-h-[200px] w-full rounded-md bg-white dark:bg-zinc-900"
+    >
       <BarChart accessibilityLayer data={totalExpenses}>
         <XAxis
           dataKey="date"
@@ -61,5 +63,4 @@ const Chart = () => {
   );
 };
 
-export { Chart, getLastWeekExpenses };
-export type { SpendingDay };
+export { WeeklySpendingsChart };

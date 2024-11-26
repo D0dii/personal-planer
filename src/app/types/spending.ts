@@ -3,8 +3,8 @@ interface Spending {
   description: string;
   amount: number;
   date: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type { Spending };
