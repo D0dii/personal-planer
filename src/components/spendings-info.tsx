@@ -37,7 +37,7 @@ const SpendingsInfo = () => {
     setTotalExpenses(calcuateDailyExpensesFromMonth());
   }, []);
   return (
-    <div className="flex w-full items-baseline gap-5 self-start rounded-lg bg-zinc-900 p-10">
+    <div className="flex w-full items-baseline gap-5 self-start rounded-lg bg-white p-10 dark:bg-zinc-900">
       <h2 className="text-xl">In this month you have spent </h2>
       <span className="text-3xl">
         ${totalExpenses.reduce((sum, spending) => sum + spending.amount, 0)}

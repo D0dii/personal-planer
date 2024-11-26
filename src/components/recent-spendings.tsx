@@ -65,7 +65,7 @@ const RecentSpendings = () => {
   return recentExpenses.length === 0 ? (
     <LoadingSkeleton />
   ) : (
-    <Table className="rounded-lg bg-zinc-900">
+    <Table className="rounded-lg bg-white dark:bg-zinc-900">
       <TableHeader>
         <TableRow>
           <TableHead>Description</TableHead>

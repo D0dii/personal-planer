@@ -10,9 +10,9 @@ import {
 
 function LoadingSkeleton() {
   return (
-    <Table className="rounded-lg bg-zinc-900">
+    <Table className="rounded-lg bg-white dark:bg-zinc-900">
       <TableHeader>
-        <TableRow className="border-gray-800">
+        <TableRow className="border-slate-300 dark:border-gray-800">
           <TableHead>
             <Skeleton className="h-4" />
           </TableHead>
