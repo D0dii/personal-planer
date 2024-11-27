@@ -1,9 +1,9 @@
-import { MyCalendar } from "@/components/calendar";
+import { Calendar } from "@/components/calendar";
 
 export default function Home() {
   return (
     <main>
-      <MyCalendar />
+      <Calendar />
     </main>
   );
 }
