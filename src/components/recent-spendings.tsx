@@ -56,13 +56,34 @@ const changeIsoDateToNormalFormat = (date: string) => {
 
 const RecentSpendings = () => {
   const [recentExpenses, setRecentExpenses] = React.useState([] as Spending[]);
+  const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
     const expenses = getRecentExpenses();
     setRecentExpenses(expenses);
+    setLoading(false);
   }, []);
 
+  if (loading) {
+    return <LoadingSkeleton />;
+  }
+
   return recentExpenses.length === 0 ? (
-    <LoadingSkeleton />
+    <Table className="rounded-lg bg-white dark:bg-zinc-900">
+      <TableHeader>
+        <TableRow>
+          <TableHead>Description</TableHead>
+          <TableHead>Created at</TableHead>
+          <TableHead className="text-right">Amount</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell colSpan={3} className="h-14 text-center text-xl">
+            {"You haven't spent anything in the last 7 days"}
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
   ) : (
     <Table className="rounded-lg bg-white dark:bg-zinc-900">
       <TableHeader>

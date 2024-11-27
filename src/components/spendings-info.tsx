@@ -3,6 +3,7 @@
 import React from "react";
 
 import { Spending } from "@/app/types/spending";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface SpendingDay {
   date: Date;
@@ -33,15 +34,22 @@ const calcuateDailyExpensesFromMonth = () => {
 
 const SpendingsInfo = () => {
   const [totalExpenses, setTotalExpenses] = React.useState([] as SpendingDay[]);
+  const [isLoading, setIsLoading] = React.useState(true);
   React.useEffect(() => {
     setTotalExpenses(calcuateDailyExpensesFromMonth());
+    setIsLoading(false);
   }, []);
+
   return (
     <div className="flex w-full items-baseline gap-5 self-start rounded-lg bg-white p-10 dark:bg-zinc-900">
       <h2 className="text-xl">In this month you have spent </h2>
-      <span className="text-3xl">
-        ${totalExpenses.reduce((sum, spending) => sum + spending.amount, 0)}
-      </span>
+      {isLoading ? (
+        <Skeleton className="h-[29px] w-56" />
+      ) : (
+        <span className="text-3xl">
+          ${totalExpenses.reduce((sum, spending) => sum + spending.amount, 0)}
+        </span>
+      )}
     </div>
   );
 };
