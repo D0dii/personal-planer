@@ -68,7 +68,7 @@ const RecentSpendings = () => {
   }
 
   return recentExpenses.length === 0 ? (
-    <Table className="rounded-lg bg-white dark:bg-zinc-900">
+    <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Description</TableHead>
@@ -85,7 +85,7 @@ const RecentSpendings = () => {
       </TableBody>
     </Table>
   ) : (
-    <Table className="rounded-lg bg-white dark:bg-zinc-900">
+    <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Description</TableHead>

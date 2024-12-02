@@ -2,8 +2,8 @@ import { Calendar } from "@/components/calendar";
 
 export default function Home() {
   return (
-    <main>
+    <div className="px-20 py-8">
       <Calendar />
-    </main>
+    </div>
   );
 }

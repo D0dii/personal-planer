@@ -20,7 +20,7 @@ const SpendingsTable = ({
   updateSpending: (spendingId: string, updatedSpending: Spending) => void;
 }) => {
   return spendings.length === 0 ? (
-    <Table className="rounded-lg bg-white dark:bg-zinc-900">
+    <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Description</TableHead>
@@ -37,10 +37,10 @@ const SpendingsTable = ({
       </TableBody>
     </Table>
   ) : (
-    <Table className="rounded-lg bg-white dark:bg-zinc-900">
+    <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Description</TableHead>
+          <TableHead>Description</TableHead>
           <TableHead>Date</TableHead>
           <TableHead>Amount</TableHead>
         </TableRow>
