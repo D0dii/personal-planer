@@ -3,7 +3,9 @@
 import * as React from "react";
 
 import { Event } from "@/app/types/event";
+import { TimePicker } from "@/components/time-picker";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
@@ -11,25 +13,34 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { getNewTime } from "@/helpers/get-new-time";
 
-import { TimePicker } from "./time-picker";
-import { Calendar } from "./ui/calendar";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-
-const DialogNewEvent = ({
+const DialogEditEvent = ({
   isOpen,
   setIsOpen,
   onSubmit,
+  deleteEvent,
+  id,
+  title,
+  initialDate,
+  initialStartTime,
+  initialEndTime,
 }: {
   isOpen: boolean;
   setIsOpen: () => void;
   onSubmit: (newEvent: Event) => void;
+  deleteEvent: () => void;
+  id: string;
+  title: string;
+  initialDate: Date;
+  initialStartTime: string;
+  initialEndTime: string;
 }) => {
-  const [date, setDate] = React.useState<Date>(new Date());
-  const [startTime, setStartTime] = React.useState<string>(() => getNewTime());
-  const [endTime, setEndTime] = React.useState<string>(() => getNewTime());
+  const [date, setDate] = React.useState<Date>(initialDate);
+  const [startTime, setStartTime] = React.useState<string>(initialStartTime);
+  const [endTime, setEndTime] = React.useState<string>(initialEndTime);
   const onDateSelect = (date: Date | undefined) => {
     if (date) {
       setDate(date);
@@ -45,7 +56,7 @@ const DialogNewEvent = ({
     endDateTime.setHours(endHour, endMinute);
 
     const newEvent = {
-      id: crypto.randomUUID(),
+      id,
       title: formData.get("event-title") as string,
       start: startDateTime.toISOString(),
       end: endDateTime.toISOString(),
@@ -55,6 +66,13 @@ const DialogNewEvent = ({
     onSubmit(newEvent);
     setIsOpen();
   };
+  React.useEffect(() => {
+    if (isOpen) {
+      setDate(initialDate);
+      setStartTime(initialStartTime);
+      setEndTime(initialEndTime);
+    }
+  }, [initialDate, initialEndTime, initialStartTime, isOpen]);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="w-auto">
@@ -66,7 +84,12 @@ const DialogNewEvent = ({
         </DialogHeader>
         <form action={onFormSubmit} className="flex flex-col gap-4">
           <Label htmlFor="event-title">Event title</Label>
-          <Input name="event-title" placeholder="Event title" required />
+          <Input
+            name="event-title"
+            placeholder="Event title"
+            required
+            defaultValue={title}
+          />
           <Label>Select date</Label>
           <Calendar
             mode="single"
@@ -86,11 +109,14 @@ const DialogNewEvent = ({
               label="Select end time"
             />
           </div>
-          <Button type="submit">Add new event</Button>
+          <Button type="button" onClick={deleteEvent} variant={"outline"}>
+            Delete event
+          </Button>
+          <Button type="submit">Edit event</Button>
         </form>
       </DialogContent>
     </Dialog>
   );
 };
 
-export { DialogNewEvent };
+export { DialogEditEvent };

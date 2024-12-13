@@ -18,12 +18,12 @@ const TimePicker = ({
   label: string;
 }) => {
   return (
-    <>
-      <Label htmlFor="event-end-time">{label}</Label>
+    <div className="flex flex-col gap-2">
+      <Label htmlFor={label}>{label}</Label>
       <Select
         defaultValue={time}
         onValueChange={(e: string) => onTimeChange(e)}
-        name="event-end-time"
+        name={label}
       >
         <SelectTrigger className="w-[120px] font-normal focus:ring-0">
           <SelectValue />
@@ -44,7 +44,7 @@ const TimePicker = ({
           </ScrollArea>
         </SelectContent>
       </Select>
-    </>
+    </div>
   );
 };
 
