@@ -12,7 +12,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import { DatePicker24 } from "./date-picker-24";
+import { TimePicker } from "./time-picker";
+import { Calendar } from "./ui/calendar";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
@@ -25,22 +26,34 @@ const DialogNewEvent = ({
   setIsOpen: () => void;
   onSubmit: (newEvent: Event) => void;
 }) => {
-  const startDate = React.useRef(new Date());
-  const endDate = React.useRef(new Date());
-  const setStartDate = (date: Date) => {
-    startDate.current = date;
-  };
-  const setEndDate = (date: Date) => {
-    endDate.current = date;
+  const [date, setDate] = React.useState<Date>(new Date());
+  const [startTime, setStartTime] = React.useState<string>(
+    date.getHours() + ":" + date.getMinutes(),
+  );
+  const [endTime, setEndTime] = React.useState<string>(
+    date.getHours() + ":" + (date.getMinutes() + 30),
+  );
+  const onDateSelect = (date: Date | undefined) => {
+    if (date) {
+      setDate(date);
+    }
   };
   const onFormSubmit = (formData: FormData) => {
+    const startDateTime = new Date(date);
+    const [startHour, startMinute] = startTime.split(":").map(Number);
+    startDateTime.setHours(startHour, startMinute);
+
+    const endDateTime = new Date(date);
+    const [endHour, endMinute] = endTime.split(":").map(Number);
+    endDateTime.setHours(endHour, endMinute);
+
     const newEvent: Event = {
       title: formData.get("event-title") as string,
-      start: startDate.current.toISOString(),
-      end: endDate.current.toISOString(),
+      start: startDateTime.toISOString(),
+      end: endDateTime.toISOString(),
     };
-    startDate.current = new Date();
-    endDate.current = new Date();
+    setStartTime(new Date().getHours() + ":" + new Date().getMinutes());
+    setEndTime(new Date().getHours() + ":" + (new Date().getMinutes() + 30));
     onSubmit(newEvent);
     setIsOpen();
   };
@@ -56,16 +69,25 @@ const DialogNewEvent = ({
         <form action={onFormSubmit} className="flex flex-col gap-4">
           <Label htmlFor="event-title">Event title</Label>
           <Input name="event-title" placeholder="Event title" required />
-          <Label>Start date</Label>
-          <DatePicker24
-            initialDate={startDate.current}
-            updateExternalDate={setStartDate}
+          <Label>Select date</Label>
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={onDateSelect}
+            className="rounded-md bg-white dark:bg-zinc-900"
           />
-          <Label>End date</Label>
-          <DatePicker24
-            initialDate={endDate.current}
-            updateExternalDate={setEndDate}
-          />
+          <div className="flex gap-4">
+            <TimePicker
+              time={startTime}
+              onTimeChange={setStartTime}
+              label="Select start time"
+            />
+            <TimePicker
+              time={endTime}
+              onTimeChange={setEndTime}
+              label="Select end time"
+            />
+          </div>
           <Button type="submit">Add new event</Button>
         </form>
       </DialogContent>
