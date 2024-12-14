@@ -39,7 +39,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <main className="m-8 ml-0 w-full bg-gray-300 dark:bg-black">
+          <main className="m-8 ml-0 h-[92vh] w-full bg-gray-300 dark:bg-black">
             {children}
           </main>
         </ThemeProvider>

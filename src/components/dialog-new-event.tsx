@@ -11,7 +11,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { getNewTime } from "@/helpers/get-new-time";
 
 import { TimePicker } from "./time-picker";
 import { Calendar } from "./ui/calendar";
@@ -28,8 +27,8 @@ const DialogNewEvent = ({
   onSubmit: (newEvent: Event) => void;
 }) => {
   const [date, setDate] = React.useState<Date>(new Date());
-  const [startTime, setStartTime] = React.useState<string>(() => getNewTime());
-  const [endTime, setEndTime] = React.useState<string>(() => getNewTime());
+  const [startTime, setStartTime] = React.useState<string>("14:00");
+  const [endTime, setEndTime] = React.useState<string>("14:30");
   const onDateSelect = (date: Date | undefined) => {
     if (date) {
       setDate(date);
@@ -50,8 +49,8 @@ const DialogNewEvent = ({
       start: startDateTime.toISOString(),
       end: endDateTime.toISOString(),
     } satisfies Event;
-    setStartTime(getNewTime());
-    setEndTime(getNewTime());
+    setStartTime("14:00");
+    setEndTime("14:30");
     onSubmit(newEvent);
     setIsOpen();
   };
@@ -72,7 +71,7 @@ const DialogNewEvent = ({
             mode="single"
             selected={date}
             onSelect={onDateSelect}
-            className="rounded-md bg-white dark:bg-zinc-900"
+            className="rounded-md border bg-white dark:bg-zinc-900"
           />
           <div className="flex justify-between gap-4">
             <TimePicker

@@ -24,3 +24,11 @@ body {
     --chart-5: 340 75% 55%;
   }
 }
+
+div.fc-view-harness {
+  background: white;
+}
+
+.dark div.fc-view-harness {
+  background: black;
+}

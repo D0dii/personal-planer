@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getNewTime } from "@/helpers/get-new-time";
 
 const DialogEditEvent = ({
   isOpen,
@@ -61,8 +60,6 @@ const DialogEditEvent = ({
       start: startDateTime.toISOString(),
       end: endDateTime.toISOString(),
     } satisfies Event;
-    setStartTime(getNewTime());
-    setEndTime(getNewTime());
     onSubmit(newEvent);
     setIsOpen();
   };
@@ -77,9 +74,9 @@ const DialogEditEvent = ({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="w-auto">
         <DialogHeader>
-          <DialogTitle>Add new event</DialogTitle>
+          <DialogTitle>Edit event</DialogTitle>
           <DialogDescription>
-            Here you can add a new event to your calendar
+            Here you can edit event in your calendar
           </DialogDescription>
         </DialogHeader>
         <form action={onFormSubmit} className="flex flex-col gap-4">
@@ -95,7 +92,7 @@ const DialogEditEvent = ({
             mode="single"
             selected={date}
             onSelect={onDateSelect}
-            className="rounded-md bg-white dark:bg-zinc-900"
+            className="rounded-md border bg-white dark:bg-zinc-900"
           />
           <div className="flex justify-between gap-4">
             <TimePicker

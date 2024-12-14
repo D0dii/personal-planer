@@ -12,47 +12,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-const getRecentExpenses = () => {
-  const today = new Date();
-  let allExpenses: Spending[] = [];
-
-  for (let i = 7; i >= 0; i--) {
-    const date = new Date(today);
-    date.setDate(today.getDate() - i);
-
-    const dateString = date.toDateString();
-    const spendings = JSON.parse(
-      localStorage.getItem(dateString) || "[]",
-    ) as Spending[];
-    allExpenses = [...allExpenses, ...spendings];
-  }
-  return allExpenses
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    )
-    .slice(0, 5);
-};
-
-const changeIsoDateToNormalFormat = (date: string) => {
-  const newDate = new Date(date);
-  const optionsDate: Intl.DateTimeFormatOptions = {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  };
-  const optionsTime: Intl.DateTimeFormatOptions = {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  };
-  return (
-    newDate.toLocaleDateString("en-US", optionsDate) +
-    " " +
-    newDate.toLocaleTimeString("en-US", optionsTime)
-  );
-};
+import { changeIsoDateToNormalFormat } from "@/helpers/change-iso-date-to-normal";
+import { getRecentExpenses } from "@/helpers/get-recent-spendings";
 
 const RecentSpendings = () => {
   const [recentExpenses, setRecentExpenses] = React.useState([] as Spending[]);
