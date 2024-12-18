@@ -51,6 +51,7 @@ const DialogNewEvent = ({
     } satisfies Event;
     setStartTime("14:00");
     setEndTime("14:30");
+    setDate(new Date());
     onSubmit(newEvent);
     setIsOpen();
   };
@@ -71,7 +72,7 @@ const DialogNewEvent = ({
             mode="single"
             selected={date}
             onSelect={onDateSelect}
-            className="rounded-md border bg-white dark:bg-zinc-900"
+            className="rounded-md border bg-white dark:border-none dark:bg-zinc-900"
           />
           <div className="flex justify-between gap-4">
             <TimePicker

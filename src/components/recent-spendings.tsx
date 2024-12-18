@@ -46,26 +46,29 @@ const RecentSpendings = () => {
       </TableBody>
     </Table>
   ) : (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Description</TableHead>
-          <TableHead>Created at</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {recentExpenses.map((expense) => (
-          <TableRow key={expense.id} className="border-0">
-            <TableCell>{expense.description}</TableCell>
-            <TableCell>
-              {changeIsoDateToNormalFormat(expense.createdAt)}
-            </TableCell>
-            <TableCell className="text-right">{expense.amount}</TableCell>
+    <div className="w-100 flex w-full flex-col gap-1">
+      <h2 className="text-3xl">Recent spendings</h2>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Description</TableHead>
+            <TableHead>Created at</TableHead>
+            <TableHead className="text-right">Amount</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {recentExpenses.map((expense) => (
+            <TableRow key={expense.id} className="border-0">
+              <TableCell>{expense.description}</TableCell>
+              <TableCell>
+                {changeIsoDateToNormalFormat(expense.createdAt)}
+              </TableCell>
+              <TableCell className="text-right">{expense.amount}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
 

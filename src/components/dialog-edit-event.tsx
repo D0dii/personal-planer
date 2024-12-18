@@ -92,7 +92,7 @@ const DialogEditEvent = ({
             mode="single"
             selected={date}
             onSelect={onDateSelect}
-            className="rounded-md border bg-white dark:bg-zinc-900"
+            className="rounded-md border bg-white dark:border-none dark:bg-zinc-900"
           />
           <div className="flex justify-between gap-4">
             <TimePicker
