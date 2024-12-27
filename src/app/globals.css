@@ -32,3 +32,10 @@ div.fc-view-harness {
 .dark div.fc-view-harness {
   background: black;
 }
+
+@media only screen and (max-width: 600px) {
+  .fc-direction-ltr .fc-toolbar > * > :not(:first-child) {
+    margin-left: 0;
+    margin-top: 4px;
+  }
+}

@@ -51,9 +51,9 @@ export default function Home() {
     setSpendings(newSpendings);
   };
   return (
-    <div className="flex w-full flex-col items-center pb-8 pt-8 md:px-16">
+    <div className="flex w-full flex-col items-center pb-8 pt-8 md:px-12">
       <h1 className="mb-8 text-5xl">List of your todays spendings</h1>
-      <div className="flex w-full flex-col justify-center md:flex-row">
+      <div className="flex w-full flex-col justify-center lg:flex-row">
         <div className="flex w-full flex-col items-center gap-8">
           <Calendar
             mode="single"
@@ -78,7 +78,7 @@ export default function Home() {
             <Button type="submit">Add</Button>
           </form>
         </div>
-        <div className="h-[70vh] w-full overflow-auto">
+        <div className="mt-6 h-[70vh] w-full overflow-auto px-8 lg:mt-0 lg:px-0">
           {isLoading ? (
             <LoadingSkeleton />
           ) : (

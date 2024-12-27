@@ -27,7 +27,6 @@ const UpcomingEvents = () => {
   if (loading) {
     return <LoadingSkeleton />;
   }
-  console.log(upcomingEvents);
   return upcomingEvents.length === 0 ? (
     <Table>
       <TableHeader>
