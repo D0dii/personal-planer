@@ -61,7 +61,8 @@ const SpendingsTable = ({
             Total
           </TableCell>
           <TableCell className="text-right">
-            ${spendings.reduce((prev, curr) => prev + curr.amount, 0)}
+            $
+            {spendings.reduce((prev, curr) => prev + curr.amount, 0).toFixed(2)}
           </TableCell>
         </TableRow>
       </TableFooter>

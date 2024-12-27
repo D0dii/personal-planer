@@ -21,7 +21,10 @@ const SpendingsInfo = () => {
         <Skeleton className="h-[29px] w-56" />
       ) : (
         <span className="text-3xl">
-          ${totalExpenses.reduce((sum, spending) => sum + spending.amount, 0)}
+          $
+          {totalExpenses
+            .reduce((sum, spending) => sum + spending.amount, 0)
+            .toFixed(2)}
         </span>
       )}
     </div>
