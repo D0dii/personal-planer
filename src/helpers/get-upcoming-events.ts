@@ -1,6 +1,6 @@
-import type { Event } from "@/app/types/event";
+import type { Event } from "@/types/event";
 
-const getUpcomingEvents = () => {
+export const getUpcomingEvents = () => {
   const events = JSON.parse(
     localStorage.getItem("personal-planer-events") || "[]",
   ) as Event[];
@@ -13,5 +13,3 @@ const getUpcomingEvents = () => {
   });
   return upcomingEvents.slice(0, 5);
 };
-
-export { getUpcomingEvents };

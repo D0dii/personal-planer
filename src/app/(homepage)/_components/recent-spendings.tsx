@@ -2,7 +2,6 @@
 
 import React from "react";
 
-import { Spending } from "@/app/types/spending";
 import { LoadingSkeleton } from "@/components/loading-skeleton";
 import {
   Table,
@@ -14,8 +13,9 @@ import {
 } from "@/components/ui/table";
 import { changeIsoDateToNormalFormat } from "@/helpers/change-iso-date-to-normal";
 import { getRecentExpenses } from "@/helpers/get-recent-spendings";
+import { Spending } from "@/types/spending";
 
-const RecentSpendings = () => {
+export const RecentSpendings = () => {
   const [recentExpenses, setRecentExpenses] = React.useState([] as Spending[]);
   const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
@@ -74,5 +74,3 @@ const RecentSpendings = () => {
     </div>
   );
 };
-
-export { RecentSpendings };

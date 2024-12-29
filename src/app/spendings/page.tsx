@@ -3,15 +3,15 @@
 import React from "react";
 
 import { LoadingSkeleton } from "@/components/loading-skeleton";
-import { SpendingsTable } from "@/components/spendings-table";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { Spending } from "@/types/spending";
 
-import { Spending } from "../types/spending";
+import { SpendingsTable } from "./_components/spendings-table";
 
-export default function Home() {
+export default function SpendingsPage() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   const {
     value: spendings,
@@ -63,12 +63,14 @@ export default function Home() {
           />
           <form action={addSpending} className="flex flex-col gap-4">
             <Input
+              required
               type="text"
               placeholder="Description"
               name="description"
               className="bg-white dark:bg-zinc-900"
             />
             <Input
+              required
               type="number"
               step="0.01"
               placeholder="Amount"

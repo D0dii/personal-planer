@@ -2,8 +2,6 @@
 
 import * as React from "react";
 
-import { Event } from "@/app/types/event";
-import { TimePicker } from "@/components/time-picker";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,8 +24,11 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Event } from "@/types/event";
 
-const DialogEditEvent = ({
+import { TimePicker } from "./time-picker";
+
+export const DialogEditEvent = ({
   isOpen,
   setIsOpen,
   onSubmit,
@@ -126,8 +127,7 @@ const DialogEditEvent = ({
               <AlertDialogHeader>
                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
+                  This action cannot be undone.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -145,5 +145,3 @@ const DialogEditEvent = ({
     </Dialog>
   );
 };
-
-export { DialogEditEvent };

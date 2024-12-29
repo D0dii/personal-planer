@@ -1,4 +1,4 @@
-const changeIsoDateToNormalFormat = (date: string) => {
+export const changeIsoDateToNormalFormat = (date: string) => {
   const newDate = new Date(date);
   const optionsDate: Intl.DateTimeFormatOptions = {
     weekday: "short",
@@ -16,5 +16,3 @@ const changeIsoDateToNormalFormat = (date: string) => {
     newDate.toLocaleTimeString("en-US", optionsTime)
   );
 };
-
-export { changeIsoDateToNormalFormat };

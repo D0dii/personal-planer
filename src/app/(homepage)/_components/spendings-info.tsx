@@ -2,11 +2,11 @@
 
 import React from "react";
 
-import { Expense } from "@/app/types/expense";
 import { Skeleton } from "@/components/ui/skeleton";
 import { calcuateDailyExpensesFromMonth } from "@/helpers/calculate-daily-expenses-from-month";
+import { Expense } from "@/types/expense";
 
-const SpendingsInfo = () => {
+export const SpendingsInfo = () => {
   const [totalExpenses, setTotalExpenses] = React.useState([] as Expense[]);
   const [isLoading, setIsLoading] = React.useState(true);
   React.useEffect(() => {
@@ -30,5 +30,3 @@ const SpendingsInfo = () => {
     </div>
   );
 };
-
-export { SpendingsInfo };

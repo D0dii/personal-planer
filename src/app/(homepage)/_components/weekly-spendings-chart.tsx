@@ -3,9 +3,9 @@
 import React from "react";
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
-import { SpendingDay } from "@/app/types/spending-day";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { getLastWeekExpenses } from "@/helpers/get-last-week-expenses";
+import { SpendingDay } from "@/types/spending-day";
 
 const chartConfig = {
   desktop: {
@@ -14,7 +14,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const WeeklySpendingsChart = () => {
+export const WeeklySpendingsChart = () => {
   const [totalExpenses, setTotalExpenses] = React.useState([] as SpendingDay[]);
   React.useEffect(() => {
     setTotalExpenses(getLastWeekExpenses());
@@ -40,5 +40,3 @@ const WeeklySpendingsChart = () => {
     </div>
   );
 };
-
-export { WeeklySpendingsChart };

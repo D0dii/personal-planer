@@ -1,7 +1,7 @@
-import { Expense } from "@/app/types/expense";
-import { Spending } from "@/app/types/spending";
+import { Expense } from "@/types/expense";
+import { Spending } from "@/types/spending";
 
-const calcuateDailyExpensesFromMonth = () => {
+export const calcuateDailyExpensesFromMonth = () => {
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
   const totalExpenses: Expense[] = [];
@@ -22,5 +22,3 @@ const calcuateDailyExpensesFromMonth = () => {
 
   return totalExpenses;
 };
-
-export { calcuateDailyExpensesFromMonth };

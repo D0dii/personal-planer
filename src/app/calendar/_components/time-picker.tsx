@@ -1,14 +1,14 @@
-import { Label } from "./ui/label";
-import { ScrollArea } from "./ui/scroll-area";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "@/components/ui/select";
 
-const TimePicker = ({
+export const TimePicker = ({
   time,
   onTimeChange,
   label,
@@ -47,5 +47,3 @@ const TimePicker = ({
     </div>
   );
 };
-
-export { TimePicker };

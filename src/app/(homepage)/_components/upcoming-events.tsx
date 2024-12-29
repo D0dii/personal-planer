@@ -2,11 +2,7 @@
 
 import React from "react";
 
-import { Event } from "@/app/types/event";
-import { changeIsoDateToNormalFormat } from "@/helpers/change-iso-date-to-normal";
-import { getUpcomingEvents } from "@/helpers/get-upcoming-events";
-
-import { LoadingSkeleton } from "./loading-skeleton";
+import { LoadingSkeleton } from "@/components/loading-skeleton";
 import {
   Table,
   TableBody,
@@ -14,9 +10,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
+} from "@/components/ui/table";
+import { changeIsoDateToNormalFormat } from "@/helpers/change-iso-date-to-normal";
+import { getUpcomingEvents } from "@/helpers/get-upcoming-events";
+import { Event } from "@/types/event";
 
-const UpcomingEvents = () => {
+export const UpcomingEvents = () => {
   const [upcomingEvents, setUpcomingEvents] = React.useState([] as Event[]);
   const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
@@ -69,5 +68,3 @@ const UpcomingEvents = () => {
     </div>
   );
 };
-
-export { UpcomingEvents };

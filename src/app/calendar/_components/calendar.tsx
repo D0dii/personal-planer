@@ -5,13 +5,14 @@ import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import React from "react";
 
-import { Event } from "@/app/types/event";
-import { DialogNewEvent } from "@/components/dialog-new-event";
+import { extractTime } from "@/helpers/extract-time";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { Event } from "@/types/event";
 
 import { DialogEditEvent } from "./dialog-edit-event";
+import { DialogNewEvent } from "./dialog-new-event";
 
-const Calendar = () => {
+export const Calendar = () => {
   const { value: events, setNewValue: setEvents } = useLocalStorage<Event[]>(
     "personal-planer-events",
     //Without it the component renders all time
@@ -87,12 +88,3 @@ const Calendar = () => {
     </div>
   );
 };
-
-const extractTime = (dateString: string): string => {
-  const date = new Date(dateString);
-  const hours = date.getHours().toString().padStart(2, "0");
-  const minutes = date.getMinutes().toString().padStart(2, "0");
-  return `${hours}:${minutes}`;
-};
-
-export { Calendar };

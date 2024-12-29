@@ -1,6 +1,6 @@
-import { Spending } from "@/app/types/spending";
+import { Spending } from "@/types/spending";
 
-const getRecentExpenses = () => {
+export const getRecentExpenses = () => {
   const today = new Date();
   let allExpenses: Spending[] = [];
 
@@ -21,5 +21,3 @@ const getRecentExpenses = () => {
     )
     .slice(0, 5);
 };
-
-export { getRecentExpenses };

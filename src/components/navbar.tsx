@@ -7,7 +7,7 @@ import React from "react";
 import { ModeToggle } from "@/components/mode-toggle";
 import { useActivePath } from "@/hooks/useActivePath";
 
-const Navbar = () => {
+export const Navbar = () => {
   const checkActivePath = useActivePath();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -15,7 +15,7 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   return (
-    <header className="relative z-50 h-20 border-b border-white/10 backdrop-blur-[12px]">
+    <header className="relative z-50 h-20 border-b border-white/10 backdrop-blur-[12px] md:border-none">
       {/* Mobile Menu Icon */}
 
       <div className="flex h-20 items-center justify-between md:hidden">
@@ -127,5 +127,3 @@ const Navbar = () => {
     </header>
   );
 };
-
-export { Navbar };

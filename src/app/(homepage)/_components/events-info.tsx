@@ -5,7 +5,7 @@ import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAllEventsCount } from "@/helpers/get-all-events-count";
 
-const EventsInfo = () => {
+export const EventsInfo = () => {
   const [allEventsCount, setAllEventsCount] = React.useState(0);
   const [isLoading, setIsLoading] = React.useState(true);
   React.useEffect(() => {
@@ -25,5 +25,3 @@ const EventsInfo = () => {
     </div>
   );
 };
-
-export { EventsInfo };

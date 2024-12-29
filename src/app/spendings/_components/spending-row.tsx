@@ -2,12 +2,12 @@
 
 import React from "react";
 
-import { Spending } from "@/app/types/spending";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { Spending } from "@/types/spending";
 
-const SpendingRow = ({
+export const SpendingRow = ({
   spending,
   removeSpending,
   updateSpending,
@@ -74,5 +74,3 @@ const SpendingRow = ({
     </TableRow>
   );
 };
-
-export { SpendingRow };
