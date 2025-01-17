@@ -1,4 +1,5 @@
-Welcome to the Personal Planner repository! This project is designed to help users effectively manage their tasks, appointments, and goals in a user-friendly interface.
+Welcome to the Personal Planner repository! This project is designed to help users effectively manage their tasks, appointments, and goals in a user-friendly interface. Currently the app is without database but on the second branch I'm working on adding backend with MongoDB.
+
 Features:
 
 - Spendings management: view, create, edit and delete your expenses.
