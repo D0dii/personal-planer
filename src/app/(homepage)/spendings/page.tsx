@@ -1,15 +1,22 @@
 "use client";
 
 import React from "react";
+import { z } from "zod";
 
 import { LoadingSkeleton } from "@/components/loading-skeleton";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { Spending } from "@/types/spending";
 
 import { SpendingsTable } from "./_components/spendings-table";
+
+const formSchema = z.object({
+  description: z.string(),
+  amount: z.coerce.number().nonnegative(),
+});
 
 export default function SpendingsPage() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
@@ -26,15 +33,21 @@ export default function SpendingsPage() {
     setDate(date);
   };
   const addSpending = (formData: FormData) => {
-    const description = formData.get("description") as string;
-    const amount = Number(formData.get("amount"));
+    const validation = formSchema.safeParse({
+      description: formData.get("description"),
+      amount: formData.get("amount"),
+    });
+    if (!validation.success) {
+      return;
+    }
+    const { description, amount } = validation.data;
     const newSpending = {
       id: crypto.randomUUID(),
       description,
       amount,
       date: date?.toDateString() as string,
-      createdAt: new Date().toISOString() as string,
-      updatedAt: new Date().toISOString() as string,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     } satisfies Spending;
     setSpendings([...spendings, newSpending]);
   };
@@ -62,21 +75,30 @@ export default function SpendingsPage() {
             className="rounded-md bg-white dark:bg-zinc-900"
           />
           <form action={addSpending} className="flex flex-col gap-4">
-            <Input
-              required
-              type="text"
-              placeholder="Description"
-              name="description"
-              className="bg-white dark:bg-zinc-900"
-            />
-            <Input
-              required
-              type="number"
-              step="0.01"
-              placeholder="Amount"
-              name="amount"
-              className="bg-white dark:bg-zinc-900"
-            />
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="description">Description</Label>
+              <Input
+                required
+                type="text"
+                placeholder="Groceries"
+                id="description"
+                name="description"
+                className="bg-white dark:bg-zinc-900"
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="amount">Amount</Label>
+              <Input
+                required
+                type="number"
+                step="0.01"
+                placeholder="125"
+                id="amount"
+                name="amount"
+                min={0}
+                className="bg-white dark:bg-zinc-900"
+              />
+            </div>
             <Button type="submit">Add</Button>
           </form>
         </div>

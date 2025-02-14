@@ -65,15 +65,24 @@ export const DialogNewEvent = ({
           </DialogDescription>
         </DialogHeader>
         <form action={onFormSubmit} className="flex flex-col gap-4">
-          <Label htmlFor="event-title">Event title</Label>
-          <Input name="event-title" placeholder="Event title" required />
-          <Label>Select date</Label>
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={onDateSelect}
-            className="w-full rounded-md border bg-white dark:border-none dark:bg-zinc-900"
-          />
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="event-title">Event title</Label>
+            <Input
+              name="event-title"
+              id="event-title"
+              placeholder="Event title"
+              required
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label>Select date</Label>
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={onDateSelect}
+              className="w-full rounded-md border bg-white dark:border-none dark:bg-zinc-900"
+            />
+          </div>
           <div className="flex justify-between gap-4">
             <TimePicker
               time={startTime}
