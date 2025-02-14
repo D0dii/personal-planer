@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 
+import "@/app/globals.css";
 import { Navbar } from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
-
-import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Personal planer",
