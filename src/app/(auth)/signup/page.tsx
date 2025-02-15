@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
+
 import { signUp } from "@/actions/user";
 import { Input } from "@/components/ui/input";
 
-export default function SignIn() {
+export const metadata: Metadata = {
+  title: "Sign Up",
+  description: "Sign up to personal planer",
+};
+
+export default function SignUp() {
   return (
     <form
       action={async (formData) => {

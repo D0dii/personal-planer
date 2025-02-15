@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { z } from "zod";
 
 import { LoadingSkeleton } from "@/components/loading-skeleton";
 import { Button } from "@/components/ui/button";
@@ -21,7 +20,7 @@ export default function SpendingsPage() {
     setNewValue: setSpendings,
     isLoading,
   } = useLocalStorage<Spending[]>(
-    date?.toDateString() as string,
+    date.toDateString(),
     React.useMemo(() => [], []),
   );
   const handleDateChange = (date: Date | undefined) => {

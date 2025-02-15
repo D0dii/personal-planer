@@ -1,11 +1,14 @@
 "use client";
 
 import { Calendar, CreditCardIcon, HomeIcon } from "lucide-react";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 
 import { ModeToggle } from "@/components/mode-toggle";
 import { useActivePath } from "@/hooks/useActivePath";
+
+import { Button } from "./ui/button";
 
 export const Navbar = () => {
   const checkActivePath = useActivePath();
@@ -84,6 +87,7 @@ export const Navbar = () => {
       ) : null}
       <div className="hidden flex-col justify-between md:flex">
         <nav className="flex flex-col items-start p-3">
+          <Button onClick={() => signOut()}>Logout</Button>
           <ModeToggle />
           <Link
             href="/"

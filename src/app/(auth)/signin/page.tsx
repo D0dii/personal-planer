@@ -1,23 +1,12 @@
-import { signIn } from "@/auth";
-import { Input } from "@/components/ui/input";
+import type { Metadata } from "next";
+
+import SignInForm from "./sign-in-form";
+
+export const metadata: Metadata = {
+  title: "Sign In",
+  description: "Sign in to personal planer",
+};
 
 export default function SignIn() {
-  return (
-    <form
-      action={async (formData) => {
-        "use server";
-        await signIn("credentials", formData);
-      }}
-    >
-      <label>
-        Email
-        <Input name="email" type="email" />
-      </label>
-      <label>
-        Password
-        <Input name="password" type="password" />
-      </label>
-      <button>Sign In</button>
-    </form>
-  );
+  return <SignInForm />;
 }

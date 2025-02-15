@@ -21,3 +21,5 @@ export const signUp = async (name: string, email: string, password: string) => {
   });
   return user;
 };
+
+//TODO implement sign in in backend for errors
