@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { getTimeForEvent } from "@/helpers/get-time-for-event";
+import { newEventSchema } from "@/lib/zod";
 import { Event } from "@/types/event";
 
 import { TimePicker } from "./time-picker";
@@ -39,9 +40,17 @@ export const DialogNewEvent = ({
     const startDateTime = getTimeForEvent(startTime, date);
     const endDateTime = getTimeForEvent(endTime, date);
 
+    const validation = newEventSchema.safeParse({
+      title: formData.get("event-title"),
+    });
+    if (!validation.success) {
+      return;
+    }
+    const { title } = validation.data;
+
     const newEvent = {
       id: crypto.randomUUID(),
-      title: formData.get("event-title") as string,
+      title,
       start: startDateTime.toISOString(),
       end: endDateTime.toISOString(),
     } satisfies Event;

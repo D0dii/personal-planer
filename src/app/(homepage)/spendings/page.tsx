@@ -9,17 +9,13 @@ import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { newSpendingSchema } from "@/lib/zod";
 import { Spending } from "@/types/spending";
 
 import { SpendingsTable } from "./_components/spendings-table";
 
-const formSchema = z.object({
-  description: z.string(),
-  amount: z.coerce.number().nonnegative(),
-});
-
 export default function SpendingsPage() {
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
+  const [date, setDate] = React.useState<Date>(new Date());
   const {
     value: spendings,
     setNewValue: setSpendings,
@@ -33,7 +29,7 @@ export default function SpendingsPage() {
     setDate(date);
   };
   const addSpending = (formData: FormData) => {
-    const validation = formSchema.safeParse({
+    const validation = newSpendingSchema.safeParse({
       description: formData.get("description"),
       amount: formData.get("amount"),
     });
@@ -45,7 +41,7 @@ export default function SpendingsPage() {
       id: crypto.randomUUID(),
       description,
       amount,
-      date: date?.toDateString() as string,
+      date: date.toDateString(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     } satisfies Spending;
