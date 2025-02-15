@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { getTimeForEvent } from "@/helpers/get-time-for-event";
 import { Event } from "@/types/event";
 
 import { TimePicker } from "./time-picker";
@@ -58,13 +59,8 @@ export const DialogEditEvent = ({
     }
   };
   const onFormSubmit = (formData: FormData) => {
-    const startDateTime = new Date(date);
-    const [startHour, startMinute] = startTime.split(":").map(Number);
-    startDateTime.setHours(startHour, startMinute);
-
-    const endDateTime = new Date(date);
-    const [endHour, endMinute] = endTime.split(":").map(Number);
-    endDateTime.setHours(endHour, endMinute);
+    const startDateTime = getTimeForEvent(startTime, date);
+    const endDateTime = getTimeForEvent(endTime, date);
 
     const newEvent = {
       id,

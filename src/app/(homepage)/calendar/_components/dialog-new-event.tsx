@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { getTimeForEvent } from "@/helpers/get-time-for-event";
 import { Event } from "@/types/event";
 
 import { TimePicker } from "./time-picker";
@@ -35,13 +36,8 @@ export const DialogNewEvent = ({
     }
   };
   const onFormSubmit = (formData: FormData) => {
-    const startDateTime = new Date(date);
-    const [startHour, startMinute] = startTime.split(":").map(Number);
-    startDateTime.setHours(startHour, startMinute);
-
-    const endDateTime = new Date(date);
-    const [endHour, endMinute] = endTime.split(":").map(Number);
-    endDateTime.setHours(endHour, endMinute);
+    const startDateTime = getTimeForEvent(startTime, date);
+    const endDateTime = getTimeForEvent(endTime, date);
 
     const newEvent = {
       id: crypto.randomUUID(),
