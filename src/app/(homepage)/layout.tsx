@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import "@/app/globals.css";
+import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -16,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="h-full">
-      <body className={`flex flex-col antialiased md:flex-row`}>
+      <body className={`antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -24,9 +25,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <main className="w-full bg-gray-300 px-5 dark:bg-black md:m-8 md:ml-0 md:px-0">
+          <main className="w-full bg-gray-300 px-5 dark:bg-black">
             {children}
           </main>
+          {/* <Footer /> */}
         </ThemeProvider>
       </body>
     </html>

@@ -11,7 +11,7 @@ export default async function HomePage() {
   const user = await auth();
   console.log(user?.user);
   return (
-    <div className="flex flex-col justify-center gap-6 pb-16 pt-10 md:px-10">
+    <div className="flex flex-col justify-center gap-6 py-6 md:px-10">
       <div className="flex w-full flex-col gap-6 lg:flex-row lg:gap-20">
         <UpcomingEvents />
         <RecentSpendings />
