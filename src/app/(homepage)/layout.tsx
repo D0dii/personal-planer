@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
 
 import "@/app/globals.css";
 import { Footer } from "@/components/footer";
@@ -24,11 +25,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          <main className="w-full bg-gray-300 px-5 dark:bg-black">
-            {children}
-          </main>
-          {/* <Footer /> */}
+          <SessionProvider>
+            <Navbar />
+            <main className="w-full bg-gray-300 px-5 dark:bg-black">
+              {children}
+            </main>
+            {/* <Footer /> */}
+          </SessionProvider>
         </ThemeProvider>
       </body>
     </html>
