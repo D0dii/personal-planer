@@ -6,7 +6,7 @@ import { z } from "zod";
 import { signIn } from "@/auth";
 import { CustomAuthError } from "@/auth.config";
 import prisma from "@/lib/db";
-import { signInSchema } from "@/lib/zod";
+import { signInSchema, signUpSchema } from "@/lib/zod";
 
 export const getUsers = async () => {
   const client = prisma;
@@ -14,12 +14,12 @@ export const getUsers = async () => {
   return users;
 };
 
-export const signUp = async (
-  name: string,
-  email: string,
-  password: string,
-  confirmPassword: string,
-) => {
+export const signUpAction = async ({
+  name,
+  email,
+  password,
+  confirmPassword,
+}: z.infer<typeof signUpSchema>) => {
   const existingUser = await prisma.user.findUnique({ where: { email } });
   if (!name || !email || !password || !confirmPassword) {
     return "Missing parameters";
@@ -38,10 +38,18 @@ export const signUp = async (
       password: hashedPassword,
     },
   });
-  return user;
+
+  if (user) {
+    await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+  }
+
+  return "Success";
 };
 
-//TODO implement sign in in backend for errors
 export const signInAction = async (formData: z.infer<typeof signInSchema>) => {
   try {
     const user = await signIn("credentials", { ...formData, redirect: false });

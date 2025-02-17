@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { signInAction } from "@/actions/user";
+import { signUpAction } from "@/actions/user";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,24 +19,26 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { signInSchema } from "@/lib/zod";
+import { signUpSchema } from "@/lib/zod";
 
 import { GoogleContinue } from "../_components/google-continue";
 
-export default function SignInForm() {
+export default function SignUpForm() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const form = useForm<z.infer<typeof signInSchema>>({
-    resolver: zodResolver(signInSchema),
+  const form = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       email: "",
+      name: "",
       password: "",
+      confirmPassword: "",
     },
   });
-  const onSubmit = async (values: z.infer<typeof signInSchema>) => {
+  const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
     setIsLoading(true);
-    const status = await signInAction(values);
+    const status = await signUpAction(values);
     if (status !== "Success") {
       setError(status);
       setIsLoading(false);
@@ -71,6 +73,20 @@ export default function SignInForm() {
           />
           <FormField
             control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input {...field} disabled={isLoading} />
+                </FormControl>
+                <FormDescription>This is your name.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="password"
             render={({ field }) => (
               <FormItem>
@@ -83,8 +99,22 @@ export default function SignInForm() {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <Input type="password" {...field} disabled={isLoading} />
+                </FormControl>
+                <FormDescription>This is your password.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="flex items-center justify-between">
-            <Link href="/signup">Don't have an account? Sign up</Link>
+            <Link href="/signin">Already have an account? Sign in</Link>
             <Button type="submit" disabled={isLoading}>
               Submit
             </Button>
