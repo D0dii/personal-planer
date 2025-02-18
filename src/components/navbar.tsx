@@ -1,19 +1,17 @@
 "use client";
 
 import { Calendar, CreditCardIcon, HomeIcon } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 
 import { ModeToggle } from "@/components/mode-toggle";
 import { useActivePath } from "@/hooks/useActivePath";
 
-import { Button } from "./ui/button";
+import { UserProfile } from "./user-avatar";
 
 export const Navbar = () => {
   const checkActivePath = useActivePath();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const { data: session, status } = useSession();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -26,6 +24,7 @@ export const Navbar = () => {
         <div className="flex h-20 items-center justify-between md:hidden">
           <div className="flex items-center gap-4">
             <ModeToggle />
+            <UserProfile />
             <button
               onClick={toggleMenu}
               className="pr-2 text-black focus:outline-none dark:text-white"
@@ -126,13 +125,7 @@ export const Navbar = () => {
             </div>
           </Link>
           <ModeToggle />
-          {status === "loading" ? (
-            "Loading..."
-          ) : status === "authenticated" ? (
-            <Button onClick={() => signOut()}>Logout</Button>
-          ) : (
-            <Link href="/signin">Sign in</Link>
-          )}
+          <UserProfile />
         </nav>
       </div>
     </div>
