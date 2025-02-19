@@ -18,22 +18,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="h-full">
-      <body className={`antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <SessionProvider>
+      <SessionProvider>
+        <body className={`antialiased`}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
             <Navbar />
             <main className="w-full bg-gray-300 px-5 dark:bg-black">
               {children}
             </main>
             {/* <Footer /> */}
-          </SessionProvider>
-        </ThemeProvider>
-      </body>
+          </ThemeProvider>
+        </body>
+      </SessionProvider>
     </html>
   );
 }

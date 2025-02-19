@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { z } from "zod";
+
 import {
   Table,
   TableBody,
@@ -7,19 +10,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { newSpendingDataLayerSchema } from "@/lib/zod";
 import { Spending } from "@/types/spending";
 
+import { useStore } from "../date-store";
 import { SpendingRow } from "./spending-row";
+import { useSpendingsFormContext } from "./spending-wrappers";
 
-export const SpendingsTable = ({
-  spendings,
-  removeSpending,
-  updateSpending,
-}: {
-  spendings: Spending[];
-  removeSpending: (spendingId: string) => void;
-  updateSpending: (spendingId: string, updatedSpending: Spending) => void;
-}) => {
+export const SpendingsTable = () => {
+  const { date, isSpendingsActive, setIsSpendingsActive } = useStore();
+  const { getSpendings } = useSpendingsFormContext();
+  const [spendings, setSpendings] = useState<Spending[]>([]);
+  const loadSpendings = async () => {
+    const spendings = await getSpendings(date);
+    setSpendings(spendings);
+    setIsSpendingsActive(true);
+  };
+  useEffect(() => {
+    loadSpendings();
+  }, [date, isSpendingsActive]);
   return spendings.length === 0 ? (
     <Table>
       <TableHeader>
@@ -48,12 +57,7 @@ export const SpendingsTable = ({
       </TableHeader>
       <TableBody>
         {spendings.map((spending) => (
-          <SpendingRow
-            key={spending.id}
-            spending={spending}
-            removeSpending={removeSpending}
-            updateSpending={updateSpending}
-          />
+          <SpendingRow key={spending.id} spending={spending} />
         ))}
       </TableBody>
       <TableFooter>

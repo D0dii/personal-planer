@@ -23,11 +23,25 @@ export const signUpSchema = signInSchema.extend({
     .max(32, "Password must be less than 32 characters"),
 });
 
-export const newSpendingSchema = z.object({
+export const newSpendingFormSchema = z.object({
   description: z.string(),
   amount: z.coerce.number().nonnegative(),
 });
 
-export const newEventSchema = z.object({
+export const newSpendingDataLayerSchema = newSpendingFormSchema.extend({
+  date: z.coerce.date(),
+});
+
+export const newSpendingSchema = newSpendingDataLayerSchema.extend({
+  userId: z.string(),
+});
+
+export const newEventFormSchema = z.object({
   title: z.string(),
+});
+
+export const newEventSchema = newEventFormSchema.extend({
+  start: z.coerce.date(),
+  end: z.coerce.date(),
+  userId: z.string(),
 });

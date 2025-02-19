@@ -1,21 +1,15 @@
 "use client";
 
 import React from "react";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { newSpendingDataLayerSchema } from "@/lib/zod";
 import { Spending } from "@/types/spending";
 
-export const SpendingRow = ({
-  spending,
-  removeSpending,
-  updateSpending,
-}: {
-  spending: Spending;
-  removeSpending: (spendingId: string) => void;
-  updateSpending: (spendingId: string, updatedSpending: Spending) => void;
-}) => {
+export const SpendingRow = ({ spending }: { spending: Spending }) => {
   const [descriptionValue, setDescriptionValue] = React.useState(
     spending.description,
   );
@@ -29,15 +23,25 @@ export const SpendingRow = ({
     timerRef.current = setTimeout(callback, delay);
   };
 
+  const updateSpending = async (
+    spendingId: string,
+    formData: z.infer<typeof newSpendingDataLayerSchema>,
+  ) => {
+    console.log("updateSpending", spendingId, formData);
+  };
+  const removeSpending = async (spendingId: string) => {
+    console.log("deleteSpending", spendingId);
+  };
+
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDescription = e.target.value;
     setDescriptionValue(newDescription);
 
     debounceUpdate(() => {
       updateSpending(spending.id, {
-        ...spending,
+        amount: spending.amount,
         description: newDescription,
-        updatedAt: new Date().toISOString() as string,
+        date: spending.date,
       });
     }, 300);
   };
@@ -48,9 +52,9 @@ export const SpendingRow = ({
 
     debounceUpdate(() => {
       updateSpending(spending.id, {
-        ...spending,
+        description: spending.description,
         amount: newAmount,
-        updatedAt: new Date().toISOString() as string,
+        date: spending.date,
       });
     }, 300);
   };
@@ -60,7 +64,7 @@ export const SpendingRow = ({
       <TableCell className="font-medium">
         <Input value={descriptionValue} onChange={handleDescriptionChange} />
       </TableCell>
-      <TableCell>{spending.date}</TableCell>
+      <TableCell>{spending.date.toDateString()}</TableCell>
       <TableCell className="text-right">
         <Input
           type="number"
@@ -69,7 +73,9 @@ export const SpendingRow = ({
         />
       </TableCell>
       <TableCell>
-        <Button onClick={() => removeSpending(spending.id)}>Remove</Button>
+        <Button onClick={async () => await removeSpending(spending.id)}>
+          Remove
+        </Button>
       </TableCell>
     </TableRow>
   );
