@@ -1,17 +1,21 @@
 "use client";
 
+import { Spending as PrismaSpending } from "@prisma/client";
 import { User } from "next-auth";
 import { createContext, useContext } from "react";
 import { z } from "zod";
 
 import {
   createSpending,
+  deleteSpending,
   getUserSpendings,
-  getUserSpendingsOnDate,
+  updateSpending,
 } from "@/actions/spending";
 import {
-  getValueFromLocalStorage,
-  saveValueToLocalStorage,
+  createSpendingToLocalStorage,
+  getSpendingsFromLocalStorage,
+  modifySpendingInLocalStorage,
+  removeSpendingFromLocalStorage,
 } from "@/hooks/useLocalStorage";
 import { newSpendingDataLayerSchema } from "@/lib/zod";
 import { Spending } from "@/types/spending";
@@ -34,10 +38,17 @@ export const SpendingsFormWrapper = ({
 };
 
 const SpendingsFormContext = createContext<{
-  getSpendings: (date: Date) => Promise<Spending[]>;
+  getSpendings: () => Promise<Spending[] | PrismaSpending[]>;
   addSpending: (
     formData: z.infer<typeof newSpendingDataLayerSchema>,
-  ) => Promise<void>;
+  ) => Promise<Spending | PrismaSpending>;
+  modifySpending: (
+    spendingId: string,
+    formData: z.infer<typeof newSpendingDataLayerSchema>,
+  ) => Promise<Spending | PrismaSpending>;
+  removeSpending: (
+    spendingId: string,
+  ) => Promise<Spending | PrismaSpending | null>;
 } | null>(null);
 
 export const useSpendingsFormContext = () => {
@@ -57,18 +68,32 @@ const AuthSpendingsFormWrapper = ({
   user: User;
   children: React.ReactNode;
 }) => {
-  const getSpendings = async (date: Date) => {
-    const userSpendings = await getUserSpendingsOnDate(user.id!, date);
+  const getSpendings = async () => {
+    const userSpendings = await getUserSpendings(user.id!);
     return userSpendings;
   };
   const addSpending = async (
     formData: z.infer<typeof newSpendingDataLayerSchema>,
   ) => {
-    await createSpending({ ...formData, userId: user.id! });
+    return await createSpending({ ...formData, userId: user.id! });
+  };
+  const modifySpending = async (
+    spendingId: string,
+    formData: z.infer<typeof newSpendingDataLayerSchema>,
+  ) => {
+    return await updateSpending(spendingId, {
+      ...formData,
+      userId: user.id!,
+    });
+  };
+  const removeSpending = async (spendingId: string) => {
+    return await deleteSpending(spendingId);
   };
   const value = {
     getSpendings,
     addSpending,
+    modifySpending,
+    removeSpending,
   };
   return (
     <SpendingsFormContext.Provider value={value}>
@@ -82,14 +107,9 @@ const NonAuthSpendingsFormWrapper = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const getSpendings = async (date: Date) => {
-    const spendings = (await getValueFromLocalStorage<Spending[]>(
-      "personal-planer-spendings",
-      [],
-    )) as Spending[];
-    return spendings.filter(
-      (spending) => spending.date.getDate() === date.getDate(),
-    );
+  const getSpendings = async () => {
+    const spendings = (await getSpendingsFromLocalStorage()) as Spending[];
+    return spendings;
   };
   const addSpending = async (
     formData: z.infer<typeof newSpendingDataLayerSchema>,
@@ -101,18 +121,29 @@ const NonAuthSpendingsFormWrapper = ({
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    const newSpendings = await getValueFromLocalStorage<Spending[]>(
-      "personal-planer-spendings",
-      [],
-    );
-    saveValueToLocalStorage("personal-planer-spendings", [
-      ...newSpendings,
-      newSpending,
-    ]);
+    return await createSpendingToLocalStorage(newSpending);
+  };
+  const modifySpending = async (
+    spendingId: string,
+    formData: z.infer<typeof newSpendingDataLayerSchema>,
+  ) => {
+    const updatedSpending = {
+      id: spendingId,
+      ...formData,
+      date: formData.date,
+      updatedAt: new Date(),
+      createdAt: new Date(),
+    };
+    return await modifySpendingInLocalStorage(spendingId, updatedSpending);
+  };
+  const removeSpending = async (spendingId: string) => {
+    return await removeSpendingFromLocalStorage(spendingId);
   };
   const value = {
     getSpendings,
     addSpending,
+    modifySpending,
+    removeSpending,
   };
   return (
     <SpendingsFormContext.Provider value={value}>

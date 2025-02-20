@@ -2,14 +2,14 @@
 
 import React from "react";
 
+import { useDate } from "@/app/store/date-provider";
 import { Calendar } from "@/components/ui/calendar";
 
 import { SpendingsForm } from "./_components/spendings-form";
 import { SpendingsTable } from "./_components/spendings-table";
-import { useStore } from "./date-store";
 
 export const SpendingsClient = () => {
-  const { date, setDate } = useStore();
+  const { date, setDate } = useDate()();
   return (
     <div className="flex w-full flex-col items-center py-6 md:px-12">
       <h1 className="mb-8 text-5xl">List of your todays spendings</h1>

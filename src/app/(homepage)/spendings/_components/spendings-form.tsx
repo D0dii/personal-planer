@@ -1,15 +1,15 @@
-import { z } from "zod";
-
+import { useDate } from "@/app/store/date-provider";
+import { useSpendings } from "@/app/store/spendings-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { newSpendingFormSchema } from "@/lib/zod";
 
-import { useStore } from "../date-store";
 import { useSpendingsFormContext } from "./spending-wrappers";
 
 export const SpendingsForm = () => {
-  const { date, setIsSpendingsActive } = useStore();
+  const date = useDate()((state) => state.date);
+  const { setSpendings, spendings } = useSpendings()();
   const { addSpending } = useSpendingsFormContext();
   const handleSubmit = async (formData: FormData) => {
     const validation = newSpendingFormSchema.safeParse({
@@ -19,8 +19,8 @@ export const SpendingsForm = () => {
     if (!validation.success) {
       return alert(validation.error.message);
     }
-    await addSpending({ ...validation.data, date });
-    setIsSpendingsActive(false);
+    const newSpending = await addSpending({ ...validation.data, date });
+    setSpendings([...spendings, newSpending]);
   };
   return (
     <form action={handleSubmit} className="flex flex-col gap-4">

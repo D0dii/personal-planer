@@ -1,7 +1,5 @@
 "use server";
 
-import { User } from "@prisma/client";
-import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import prisma from "@/lib/db";
@@ -53,6 +51,14 @@ export const createSpending = async (
 
 export const deleteSpending = async (spendingId: string) => {
   const client = prisma;
+  const isSpending = await client.spending.findUnique({
+    where: {
+      id: spendingId,
+    },
+  });
+  if (!isSpending) {
+    return null;
+  }
   const spending = await client.spending.delete({
     where: {
       id: spendingId,

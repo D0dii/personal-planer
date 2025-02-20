@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Spending } from "@/types/spending";
+
 export const useLocalStorage = <T,>(key: string, defaultValue: T) => {
   const [value, setValue] = React.useState<T>(defaultValue);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -19,49 +21,95 @@ export const useLocalStorage = <T,>(key: string, defaultValue: T) => {
   return { value, setNewValue, isLoading };
 };
 
-export const getValueFromLocalStorage = <T,>(key: string, defaultValue: T) => {
-  const itemFromStorage = localStorage.getItem(key);
-  const newObjs: T[] = [];
-  if (itemFromStorage) {
-    for (const obj of JSON.parse(itemFromStorage)) {
-      newObjs.push(deserializeObject(obj));
-    }
-    // console.log(JSON.parse(itemFromStorage));
-    // console.log(newObjs);
-    return new Promise((resolve) => resolve(newObjs));
-  } else {
-    return defaultValue;
-  }
+export const getSpendingsFromLocalStorage = (): Spending[] => {
+  const spendings = JSON.parse(
+    localStorage.getItem("personal-planer-spendings") ?? "",
+  );
+  if (!spendings) return [];
+  const deserializedSpendings = deserializeSpendings(spendings);
+  return deserializedSpendings;
 };
 
-export const saveValueToLocalStorage = <T,>(key: string, value: T) => {
-  const newObjs = [];
-  for (const obj of value) {
-    newObjs.push(serializeObject(obj));
+export const createSpendingToLocalStorage = (spending: Spending) => {
+  let deserializedSpendings: Spending[] = [];
+  const spendings = JSON.parse(
+    localStorage.getItem("personal-planer-spendings") ?? "",
+  );
+  if (spendings) {
+    deserializedSpendings = deserializeSpendings(spendings);
   }
-  localStorage.setItem(key, JSON.stringify(newObjs));
+  deserializedSpendings.push(spending);
+  const newSpendings = serializeSpendings(deserializedSpendings);
+  localStorage.setItem(
+    "personal-planer-spendings",
+    JSON.stringify(newSpendings),
+  );
+  return spending;
 };
 
-const serializeObject = (obj: object) => {
-  const newObj = {};
-  for (const [key, value] of Object.entries(obj)) {
-    if (value instanceof Date) {
-      newObj[key] = value.toString();
-    } else {
-      newObj[key] = value;
-    }
+export const modifySpendingInLocalStorage = (
+  spendingId: string,
+  spending: Spending,
+) => {
+  let deserializedSpendings: Spending[] = [];
+  const spendings = JSON.parse(
+    localStorage.getItem("personal-planer-spendings") ?? "",
+  );
+  if (spendings) {
+    deserializedSpendings = deserializeSpendings(spendings);
   }
-  return newObj;
+  const newSpendings = deserializedSpendings.map((prevSpending) =>
+    prevSpending.id === spendingId ? spending : prevSpending,
+  );
+  localStorage.setItem(
+    "personal-planer-spendings",
+    JSON.stringify(serializeSpendings(newSpendings)),
+  );
+  return spending;
 };
 
-const deserializeObject = (obj: object) => {
-  const newObj = {};
-  for (const [key, value] of Object.entries(obj)) {
-    if (typeof value === "string" && value.includes("GMT")) {
-      newObj[key] = new Date(value);
-    } else {
-      newObj[key] = value;
-    }
+export const removeSpendingFromLocalStorage = (spendingId: string) => {
+  const spendings = JSON.parse(
+    localStorage.getItem("personal-planer-spendings") ?? "",
+  );
+  if (!spendings) {
+    return null;
   }
-  return newObj;
+  const deserializedSpendings = deserializeSpendings(spendings) as Spending[];
+  const spending = deserializedSpendings.find(
+    (spending) => spending.id === spendingId,
+  );
+  if (!spending) {
+    return null;
+  }
+  const newSpendings = deserializedSpendings.filter(
+    (spending) => spending.id !== spendingId,
+  );
+  localStorage.setItem(
+    "personal-planer-spendings",
+    JSON.stringify(serializeSpendings(newSpendings)),
+  );
+  return spending;
+};
+
+const serializeSpendings = (spendings: Spending[]) => {
+  const serializedSpendings = JSON.stringify(
+    spendings.map((spending) => ({
+      ...spending,
+      date: spending.date.toString(),
+    })),
+  );
+  return serializedSpendings;
+};
+
+const deserializeSpendings = (serializedSpendings: string) => {
+  const desarializedSpendings = JSON.parse(serializedSpendings);
+  const spendings: Spending[] = [];
+  for (const spending of desarializedSpendings) {
+    spendings.push({
+      ...spending,
+      date: new Date(spending.date),
+    });
+  }
+  return spendings;
 };
