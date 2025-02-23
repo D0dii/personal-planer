@@ -3,7 +3,8 @@
 import { z } from "zod";
 
 import prisma from "@/lib/db";
-import { newSpendingSchema } from "@/lib/zod";
+import { newSpendingFormSchema } from "@/lib/zod";
+import { Spending } from "@/types/spending";
 
 export const getUserSpendings = async (userId: string) => {
   const client = prisma;
@@ -26,11 +27,11 @@ export const getUserSpendingsOnDate = async (userId: string, date: Date) => {
       },
     },
   });
-  return spendings;
+  return spendings satisfies Spending[];
 };
 
 export const createSpending = async (
-  formData: z.infer<typeof newSpendingSchema>,
+  formData: z.infer<typeof newSpendingFormSchema>,
 ) => {
   const client = prisma;
   const { description, amount, date, userId } = formData;
@@ -46,7 +47,7 @@ export const createSpending = async (
       },
     },
   });
-  return spending;
+  return spending satisfies Spending;
 };
 
 export const deleteSpending = async (spendingId: string) => {
@@ -64,12 +65,12 @@ export const deleteSpending = async (spendingId: string) => {
       id: spendingId,
     },
   });
-  return spending;
+  return spending satisfies Spending;
 };
 
 export const updateSpending = async (
   spendingId: string,
-  formData: z.infer<typeof newSpendingSchema>,
+  formData: z.infer<typeof newSpendingFormSchema>,
 ) => {
   const client = prisma;
   const spending = await client.spending.update({
@@ -80,5 +81,5 @@ export const updateSpending = async (
       ...formData,
     },
   });
-  return spending;
+  return spending satisfies Spending;
 };

@@ -2,17 +2,26 @@
 
 import React from "react";
 
-import { useSpendings } from "@/app/store/spendings-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Spending } from "@/types/spending";
 
-import { useSpendingsFormContext } from "./spending-wrappers";
-
-export const SpendingRow = ({ spending }: { spending: Spending }) => {
-  const { spendings, setSpendings } = useSpendings()();
-  const { modifySpending, removeSpending } = useSpendingsFormContext();
+export const SpendingRow = ({
+  spending,
+  handleDeleteSpending,
+  handleSpendingUpdate,
+}: {
+  spending: Spending;
+  handleDeleteSpending: (spendingId: string) => void;
+  handleSpendingUpdate: (
+    spendingId: string,
+    data: {
+      description: string;
+      amount: number;
+    },
+  ) => void;
+}) => {
   const [descriptionValue, setDescriptionValue] = React.useState(
     spending.description,
   );
@@ -31,16 +40,10 @@ export const SpendingRow = ({ spending }: { spending: Spending }) => {
     setDescriptionValue(newDescription);
 
     debounceUpdate(async () => {
-      const newSpending = await modifySpending(spending.id, {
-        amount: spending.amount,
+      handleSpendingUpdate(spending.id, {
         description: newDescription,
-        date: spending.date,
+        amount: amountValue,
       });
-      setSpendings(
-        spendings.map((spending) =>
-          spending.id === newSpending.id ? newSpending : spending,
-        ),
-      );
     }, 300);
   };
 
@@ -49,16 +52,10 @@ export const SpendingRow = ({ spending }: { spending: Spending }) => {
     setAmountValue(newAmount);
 
     debounceUpdate(async () => {
-      const newSpending = await modifySpending(spending.id, {
-        description: spending.description,
+      handleSpendingUpdate(spending.id, {
+        description: descriptionValue,
         amount: newAmount,
-        date: spending.date,
       });
-      setSpendings(
-        spendings.map((spending) =>
-          spending.id === newSpending.id ? newSpending : spending,
-        ),
-      );
     }, 300);
   };
 
@@ -78,13 +75,7 @@ export const SpendingRow = ({ spending }: { spending: Spending }) => {
       <TableCell>
         <Button
           onClick={async () => {
-            const deletedSpending = await removeSpending(spending.id);
-            if (!deletedSpending) return;
-            setSpendings(
-              spendings.filter(
-                (spending) => spending.id !== deletedSpending.id,
-              ),
-            );
+            await handleDeleteSpending(spending.id);
           }}
         >
           Remove

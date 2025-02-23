@@ -26,14 +26,8 @@ export const signUpSchema = signInSchema.extend({
 export const newSpendingFormSchema = z.object({
   description: z.string(),
   amount: z.coerce.number().nonnegative(),
-});
-
-export const newSpendingDataLayerSchema = newSpendingFormSchema.extend({
-  date: z.coerce.date(),
-});
-
-export const newSpendingSchema = newSpendingDataLayerSchema.extend({
   userId: z.string(),
+  date: z.coerce.date(),
 });
 
 export const newEventFormSchema = z.object({

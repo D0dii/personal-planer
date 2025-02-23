@@ -1,8 +1,3 @@
-import { useEffect, useState } from "react";
-
-import { useDate } from "@/app/store/date-provider";
-import { useSpendings } from "@/app/store/spendings-provider";
-import { LoadingSkeleton } from "@/components/loading-skeleton";
 import {
   Table,
   TableBody,
@@ -12,33 +7,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Spending } from "@/types/spending";
 
 import { SpendingRow } from "./spending-row";
-import { useSpendingsFormContext } from "./spending-wrappers";
 
-export const SpendingsTable = () => {
-  const date = useDate()((state) => state.date);
-  const { getSpendings } = useSpendingsFormContext();
-  const { spendings, setSpendings } = useSpendings()();
-  const [isLoading, setIsLoading] = useState(true);
-
-  const loadSpendings = async () => {
-    const spendings = (await getSpendings()).filter(
-      (spending) => spending.date.getDate() === date.getDate(),
-    );
-    setSpendings(spendings);
-  };
-
-  useEffect(() => {
-    setIsLoading(true);
-    loadSpendings();
-    setIsLoading(false);
-  }, [date]);
-
-  if (isLoading) {
-    return <LoadingSkeleton />;
-  }
-
+export const SpendingsTable = ({
+  spendings,
+  handleDeleteSpending,
+  handleSpendingUpdate,
+}: {
+  spendings: Spending[];
+  handleDeleteSpending: (spendingId: string) => void;
+  handleSpendingUpdate: (
+    spendingId: string,
+    data: { description: string; amount: number },
+  ) => void;
+}) => {
   return spendings.length === 0 ? (
     <Table>
       <TableHeader>
@@ -67,7 +51,12 @@ export const SpendingsTable = () => {
       </TableHeader>
       <TableBody>
         {spendings.map((spending) => (
-          <SpendingRow key={spending.id} spending={spending} />
+          <SpendingRow
+            key={spending.id}
+            spending={spending}
+            handleDeleteSpending={handleDeleteSpending}
+            handleSpendingUpdate={handleSpendingUpdate}
+          />
         ))}
       </TableBody>
       <TableFooter>

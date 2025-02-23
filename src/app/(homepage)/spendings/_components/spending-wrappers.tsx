@@ -36,7 +36,7 @@ export const SpendingsFormWrapper = ({
   }
   return <NonAuthSpendingsFormWrapper>{children}</NonAuthSpendingsFormWrapper>;
 };
-
+// schema na podstawie typu sprobowac
 const SpendingsFormContext = createContext<{
   getSpendings: () => Promise<Spending[] | PrismaSpending[]>;
   addSpending: (
