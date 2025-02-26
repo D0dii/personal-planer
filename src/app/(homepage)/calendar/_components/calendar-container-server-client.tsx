@@ -3,57 +3,28 @@
 import dayGridPlugin from "@fullcalendar/daygrid";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import React from "react";
+import { User } from "next-auth";
+import { useState } from "react";
 
+import { createEvent, deleteEvent, updateEvent } from "@/actions/event";
 import { extractTime } from "@/helpers/extract-time";
-import { getTimeForEvent } from "@/helpers/get-time-for-event";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { newEventSchema } from "@/lib/zod";
 import { Event } from "@/types/event";
 
+import { createUpdateEvent } from "./calendar-container-local";
 import { DialogEditEvent } from "./dialog-edit-event";
 import { DialogNewEvent } from "./dialog-new-event";
 
-export const createUpdateEvent = async (
-  formData: FormData,
-  startTime: string,
-  endTime: string,
-  date: Date,
-  id: string,
-) => {
-  const validation = newEventSchema
-    .pick({
-      title: true,
-    })
-    .safeParse({
-      title: formData.get("event-title"),
-    });
-  if (!validation.success) {
-    alert(validation.error.message);
-    return null;
-  }
-  const startDateTime = getTimeForEvent(startTime, date);
-  const endDateTime = getTimeForEvent(endTime, date);
-
-  const newEvent = {
-    id,
-    ...validation.data,
-    start: startDateTime,
-    end: endDateTime,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  } satisfies Event;
-  return newEvent;
-};
-
-export const CalendarContainerLocal = () => {
-  const { value: events, setNewValue: setEvents } = useLocalStorage<Event[]>(
-    "personal-planer-events",
-    [],
-  );
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
-  const [editEvent, setEditEvent] = React.useState<Event | null>(null);
+export const CalendarContainerServerClient = ({
+  user,
+  initialEvents,
+}: {
+  user: User;
+  initialEvents: Event[];
+}) => {
+  const [events, setEvents] = useState(initialEvents);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [editEvent, setEditEvent] = useState<Event | null>(null);
   const createNewEvent = async (
     formData: FormData,
     startTime: string,
@@ -70,10 +41,19 @@ export const CalendarContainerLocal = () => {
     if (!newEvent) {
       return null;
     }
+    const event = await createEvent({
+      title: newEvent.title,
+      start: newEvent.start,
+      end: newEvent.end,
+      userId: user.id!,
+    });
+    if (!event) {
+      return null;
+    }
     setEvents([...events, newEvent]);
     return newEvent;
   };
-  const updateEvent = async (
+  const updateEventClient = async (
     formData: FormData,
     startTime: string,
     endTime: string,
@@ -90,9 +70,19 @@ export const CalendarContainerLocal = () => {
     if (!newEvent) {
       return null;
     }
+    const event = await updateEvent(id, {
+      title: newEvent.title,
+      start: newEvent.start,
+      end: newEvent.end,
+      userId: user.id!,
+    });
+    if (!event) {
+      return null;
+    }
     setEvents(events.map((event) => (event.id === id ? newEvent : event)));
     return newEvent;
   };
+  console.log(events);
   return (
     <div className="px-2 py-6 lg:px-20">
       <FullCalendar
@@ -136,11 +126,12 @@ export const CalendarContainerLocal = () => {
       <DialogEditEvent
         isOpen={isEditDialogOpen}
         setIsOpen={() => setIsEditDialogOpen(!isEditDialogOpen)}
-        onSubmit={updateEvent}
-        deleteEvent={() => {
+        onSubmit={updateEventClient}
+        deleteEvent={async () => {
           const newEvents = events.filter(
             (event) => event.id !== editEvent?.id,
           );
+          await deleteEvent(editEvent!.id);
           setEvents(newEvents);
           setIsEditDialogOpen(false);
         }}
