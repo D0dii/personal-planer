@@ -43,7 +43,13 @@ export const DialogEditEvent = ({
 }: {
   isOpen: boolean;
   setIsOpen: () => void;
-  onSubmit: (newEvent: Event) => void;
+  onSubmit: (
+    formData: FormData,
+    startTime: string,
+    endTime: string,
+    date: Date,
+    id: string,
+  ) => Promise<Event | null>;
   deleteEvent: () => void;
   id: string;
   title: string;
@@ -59,31 +65,11 @@ export const DialogEditEvent = ({
       setDate(date);
     }
   };
-  const onFormSubmit = (formData: FormData) => {
-    const startDateTime = getTimeForEvent(startTime, date);
-    const endDateTime = getTimeForEvent(endTime, date);
-
-    const validation = newEventSchema
-      .pick({
-        title: true,
-      })
-      .safeParse({
-        title: formData.get("event-title"),
-      });
-    if (!validation.success) {
-      alert(validation.error.message);
-      return;
+  const onFormSubmit = async (formData: FormData) => {
+    const newEvent = await onSubmit(formData, startTime, endTime, date, id);
+    if (!newEvent) {
+      return alert("Something went wrong");
     }
-
-    const newEvent = {
-      id,
-      ...validation.data,
-      start: startDateTime,
-      end: endDateTime,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    } satisfies Event;
-    onSubmit(newEvent);
     setIsOpen();
   };
   React.useEffect(() => {

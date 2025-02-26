@@ -26,44 +26,29 @@ export const DialogNewEvent = ({
 }: {
   isOpen: boolean;
   setIsOpen: () => void;
-  onSubmit: (newEvent: Event) => void;
+  onSubmit: (
+    formData: FormData,
+    startTime: string,
+    endTime: string,
+    date: Date,
+  ) => Promise<Event | null>;
 }) => {
-  const [date, setDate] = React.useState<Date>(new Date());
-  const [startTime, setStartTime] = React.useState<string>("14:00");
-  const [endTime, setEndTime] = React.useState<string>("14:30");
+  const [date, setDate] = React.useState(new Date());
+  const [startTime, setStartTime] = React.useState("14:00");
+  const [endTime, setEndTime] = React.useState("14:30");
   const onDateSelect = (date: Date | undefined) => {
     if (date) {
       setDate(date);
     }
   };
-  const onFormSubmit = (formData: FormData) => {
-    const startDateTime = getTimeForEvent(startTime, date);
-    const endDateTime = getTimeForEvent(endTime, date);
-
-    const validation = newEventSchema
-      .pick({
-        title: true,
-      })
-      .safeParse({
-        title: formData.get("event-title"),
-      });
-    if (!validation.success) {
-      alert(validation.error.message);
-      return;
+  const onFormSubmit = async (formData: FormData) => {
+    const newEvent = await onSubmit(formData, startTime, endTime, date);
+    if (!newEvent) {
+      return alert("Something went wrong");
     }
-    const newEvent = {
-      id: crypto.randomUUID(),
-      ...validation.data,
-      start: startDateTime,
-      end: endDateTime,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    } satisfies Event;
-    console.log(newEvent);
     setStartTime("14:00");
     setEndTime("14:30");
     setDate(new Date());
-    onSubmit(newEvent);
     setIsOpen();
   };
   return (
