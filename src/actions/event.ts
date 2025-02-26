@@ -18,12 +18,12 @@ export const getUserEvents = async (userId: string) => {
 
 export const createEvent = async (formData: z.infer<typeof newEventSchema>) => {
   const client = prisma;
-  const { title, startDate, endDate, userId } = formData;
+  const { title, start, end, userId } = formData;
   const event = await client.event.create({
     data: {
       title,
-      startDate,
-      endDate,
+      start,
+      end,
       user: {
         connect: {
           id: userId,
