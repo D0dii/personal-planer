@@ -1,8 +1,9 @@
-interface Event {
+export interface Event {
   id: string;
   title: string;
-  start: string;
-  end: string;
+  userId?: string;
+  start: Date;
+  end: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
-
-export type { Event };

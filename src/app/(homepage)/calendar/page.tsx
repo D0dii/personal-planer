@@ -1,9 +1,20 @@
-import { Calendar } from "./_components/calendar";
+import type { Metadata } from "next";
+import React from "react";
 
-export default function CalendarPage() {
-  return (
-    <div className="px-2 py-6 lg:px-20">
-      <Calendar />
-    </div>
-  );
+import { auth } from "@/auth";
+
+import { CalendarContainerLocal } from "./_components/calendar-container-local";
+import { CalendarContainerServer } from "./_components/calendar-container-server";
+
+export const metadata: Metadata = {
+  title: "Calendar",
+  description: "List of your meetings",
+};
+
+export default async function CalendarPage() {
+  const session = await auth();
+  if (session && session.user) {
+    return <CalendarContainerServer user={session.user} />;
+  }
+  return <CalendarContainerLocal />;
 }

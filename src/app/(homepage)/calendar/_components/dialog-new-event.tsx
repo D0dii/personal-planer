@@ -40,20 +40,26 @@ export const DialogNewEvent = ({
     const startDateTime = getTimeForEvent(startTime, date);
     const endDateTime = getTimeForEvent(endTime, date);
 
-    const validation = newEventSchema.safeParse({
-      title: formData.get("event-title"),
-    });
+    const validation = newEventSchema
+      .pick({
+        title: true,
+      })
+      .safeParse({
+        title: formData.get("event-title"),
+      });
     if (!validation.success) {
+      alert(validation.error.message);
       return;
     }
-    const { title } = validation.data;
-
     const newEvent = {
       id: crypto.randomUUID(),
-      title,
-      start: startDateTime.toISOString(),
-      end: endDateTime.toISOString(),
+      ...validation.data,
+      start: startDateTime,
+      end: endDateTime,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     } satisfies Event;
+    console.log(newEvent);
     setStartTime("14:00");
     setEndTime("14:30");
     setDate(new Date());

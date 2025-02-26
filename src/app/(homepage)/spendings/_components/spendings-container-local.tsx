@@ -5,7 +5,7 @@ import { useState } from "react";
 import { LoadingSkeleton } from "@/components/loading-skeleton";
 import { Calendar } from "@/components/ui/calendar";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { newSpendingFormSchema } from "@/lib/zod";
+import { newSpendingSchema } from "@/lib/zod";
 import { Spending } from "@/types/spending";
 
 import { SpendingsForm } from "./spendings-form";
@@ -24,7 +24,7 @@ export const SpendingsContainerLocal = () => {
     }
   };
   const handleFormSubmit = async (formData: FormData) => {
-    const validation = newSpendingFormSchema
+    const validation = newSpendingSchema
       .pick({
         description: true,
         amount: true,

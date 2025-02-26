@@ -23,19 +23,16 @@ export const signUpSchema = signInSchema.extend({
     .max(32, "Password must be less than 32 characters"),
 });
 
-export const newSpendingFormSchema = z.object({
+export const newSpendingSchema = z.object({
   description: z.string(),
   amount: z.coerce.number().nonnegative(),
   userId: z.string(),
   date: z.coerce.date(),
 });
 
-export const newEventFormSchema = z.object({
+export const newEventSchema = z.object({
   title: z.string(),
-});
-
-export const newEventSchema = newEventFormSchema.extend({
+  userId: z.string(),
   start: z.coerce.date(),
   end: z.coerce.date(),
-  userId: z.string(),
 });

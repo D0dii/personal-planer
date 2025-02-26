@@ -11,7 +11,7 @@ import {
 } from "@/actions/spending";
 import { LoadingSkeleton } from "@/components/loading-skeleton";
 import { Calendar } from "@/components/ui/calendar";
-import { newSpendingFormSchema } from "@/lib/zod";
+import { newSpendingSchema } from "@/lib/zod";
 import { Spending } from "@/types/spending";
 
 import { SpendingsForm } from "./spendings-form";
@@ -40,7 +40,7 @@ export const SpendingsContainerServerClient = ({
     }
   };
   const handleFormSubmit = async (formData: FormData) => {
-    const validation = newSpendingFormSchema
+    const validation = newSpendingSchema
       .pick({
         description: true,
         amount: true,

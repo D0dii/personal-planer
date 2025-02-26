@@ -12,17 +12,18 @@ import { Event } from "@/types/event";
 import { DialogEditEvent } from "./dialog-edit-event";
 import { DialogNewEvent } from "./dialog-new-event";
 
-export const Calendar = () => {
+export const CalendarContainerLocal = () => {
   const { value: events, setNewValue: setEvents } = useLocalStorage<Event[]>(
     "personal-planer-events",
-    //Without it the component renders all time
-    React.useMemo(() => [], []),
+    [],
   );
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false);
+  const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] =
+    React.useState<boolean>(false);
   const [editEvent, setEditEvent] = React.useState<Event | null>(null);
+  console.log(events);
   return (
-    <div>
+    <div className="px-2 py-6 lg:px-20">
       <FullCalendar
         customButtons={{
           addCustomButton: {

@@ -1,6 +1,6 @@
 import React from "react";
 
-const DATE_KEYS = ["createdAt", "updatedAt", "date"];
+const DATE_KEYS = ["createdAt", "updatedAt", "date", "startDate", "endDate"];
 
 export const useLocalStorage = <T,>(key: string, defaultValue: T) => {
   const [value, setValue] = React.useState<T>(defaultValue);
