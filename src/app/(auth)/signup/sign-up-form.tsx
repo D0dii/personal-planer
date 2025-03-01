@@ -25,7 +25,6 @@ import { GoogleContinue } from "../_components/google-continue";
 
 export default function SignUpForm() {
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
@@ -37,19 +36,16 @@ export default function SignUpForm() {
     },
   });
   const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
-    setIsLoading(true);
     const status = await signUpAction(values);
     if (status !== "Success") {
       setError(status);
-      setIsLoading(false);
       return;
     }
-    setIsLoading(false);
     router.push("/");
   };
   return (
     <div className="flex flex-col">
-      <GoogleContinue isLoading={isLoading} />
+      <GoogleContinue isLoading={form.formState.isSubmitting} />
       <span className="mx-auto mb-6 text-2xl">Or</span>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -63,7 +59,7 @@ export default function SignUpForm() {
                   <Input
                     placeholder="email@example.com"
                     {...field}
-                    disabled={isLoading}
+                    disabled={form.formState.isSubmitting}
                   />
                 </FormControl>
                 <FormDescription>This is your email.</FormDescription>
@@ -78,7 +74,7 @@ export default function SignUpForm() {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled={isLoading} />
+                  <Input {...field} disabled={form.formState.isSubmitting} />
                 </FormControl>
                 <FormDescription>This is your name.</FormDescription>
                 <FormMessage />
@@ -92,7 +88,11 @@ export default function SignUpForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} disabled={isLoading} />
+                  <Input
+                    type="password"
+                    {...field}
+                    disabled={form.formState.isSubmitting}
+                  />
                 </FormControl>
                 <FormDescription>This is your password.</FormDescription>
                 <FormMessage />
@@ -106,7 +106,11 @@ export default function SignUpForm() {
               <FormItem>
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} disabled={isLoading} />
+                  <Input
+                    type="password"
+                    {...field}
+                    disabled={form.formState.isSubmitting}
+                  />
                 </FormControl>
                 <FormDescription>This is your password.</FormDescription>
                 <FormMessage />
@@ -115,7 +119,7 @@ export default function SignUpForm() {
           />
           <div className="flex items-center justify-between">
             <Link href="/signin">Already have an account? Sign in</Link>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={form.formState.isSubmitting}>
               Submit
             </Button>
           </div>

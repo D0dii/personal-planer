@@ -25,7 +25,6 @@ import { GoogleContinue } from "../_components/google-continue";
 
 export default function SignInForm() {
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -35,19 +34,16 @@ export default function SignInForm() {
     },
   });
   const onSubmit = async (values: z.infer<typeof signInSchema>) => {
-    setIsLoading(true);
     const status = await signInAction(values);
     if (status !== "Success") {
       setError(status);
-      setIsLoading(false);
       return;
     }
-    setIsLoading(false);
     router.push("/");
   };
   return (
     <div className="flex flex-col">
-      <GoogleContinue isLoading={isLoading} />
+      <GoogleContinue isLoading={form.formState.isSubmitting} />
       <span className="mx-auto mb-6 text-2xl">Or</span>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -61,7 +57,7 @@ export default function SignInForm() {
                   <Input
                     placeholder="email@example.com"
                     {...field}
-                    disabled={isLoading}
+                    disabled={form.formState.isSubmitting}
                   />
                 </FormControl>
                 <FormDescription>This is your email.</FormDescription>
@@ -76,7 +72,11 @@ export default function SignInForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} disabled={isLoading} />
+                  <Input
+                    type="password"
+                    {...field}
+                    disabled={form.formState.isSubmitting}
+                  />
                 </FormControl>
                 <FormDescription>This is your password.</FormDescription>
                 <FormMessage />
@@ -85,7 +85,7 @@ export default function SignInForm() {
           />
           <div className="flex items-center justify-between">
             <Link href="/signup">Don't have an account? Sign up</Link>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={form.formState.isSubmitting}>
               Submit
             </Button>
           </div>

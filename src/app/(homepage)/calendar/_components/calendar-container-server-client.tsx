@@ -82,7 +82,6 @@ export const CalendarContainerServerClient = ({
     setEvents(events.map((event) => (event.id === id ? newEvent : event)));
     return newEvent;
   };
-  console.log(events);
   return (
     <div className="px-2 py-6 lg:px-20">
       <FullCalendar
