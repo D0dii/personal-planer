@@ -5,12 +5,15 @@ import { auth } from "@/auth";
 import { LoadingSkeleton } from "@/components/loading-skeleton";
 
 import { EventsInfo } from "./_components/events-info";
+import { EventsInfoContainerServer } from "./_components/events-info-container-server";
 import { RecentSpendingsContainerLocal } from "./_components/recent-spendings-container-local";
 import { RecentSpendingsContainerServer } from "./_components/recent-spendings-container-server";
 import { SpendingsInfo } from "./_components/spendings-info";
+import { SpendingsInfoContainerServer } from "./_components/spendings-info-container-server";
 import { UpcomingEvents } from "./_components/upcoming-events";
 import { UpcomingEventsContainerLocal } from "./_components/upcoming-events-container-local";
 import { UpcomingEventsContainerServer } from "./_components/upcoming-events-container-server";
+import { WeeklySpendingsChartContainerServer } from "./_components/weekly-spendings-char-container-server";
 import { WeeklySpendingsChart } from "./_components/weekly-spendings-chart";
 
 export const metadata: Metadata = {
@@ -32,10 +35,14 @@ export default async function HomePage() {
           </Suspense>
         </div>
         <div className="flex w-full flex-col gap-6 lg:flex-row lg:gap-20">
-          <EventsInfo />
-          <SpendingsInfo />
+          <Suspense fallback={<LoadingSkeleton />}>
+            <EventsInfoContainerServer user={session.user} />
+          </Suspense>
+          <Suspense fallback={<LoadingSkeleton />}>
+            <SpendingsInfoContainerServer user={session.user} />
+          </Suspense>
         </div>
-        <WeeklySpendingsChart />
+        <WeeklySpendingsChartContainerServer user={session.user} />
       </div>
     );
   }

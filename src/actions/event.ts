@@ -30,6 +30,7 @@ export const getUserUpcomingEvents = async (userId: string) => {
     },
     take: 5,
   });
+
   return events satisfies Event[];
 };
 

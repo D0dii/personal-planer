@@ -1,24 +1,22 @@
 "use client";
 
-import React from "react";
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
-import { getLastWeekExpenses } from "@/helpers/get-last-week-expenses";
-import { SpendingDay } from "@/types/spending-day";
+import { Spending } from "@/types/spending";
 
 const chartConfig = {
   desktop: {
-    label: "Expenses",
+    label: "Spendings",
     color: "#2563eb",
   },
 } satisfies ChartConfig;
 
-export const WeeklySpendingsChart = () => {
-  const [totalExpenses, setTotalExpenses] = React.useState([] as SpendingDay[]);
-  React.useEffect(() => {
-    setTotalExpenses(getLastWeekExpenses());
-  }, []);
+export const WeeklySpendingsChart = ({
+  lastWeekSpendings,
+}: {
+  lastWeekSpendings: Spending[];
+}) => {
   return (
     <div className="flex w-full flex-col gap-1">
       <h2 className="text-3xl">Your last week spendings</h2>
@@ -26,7 +24,13 @@ export const WeeklySpendingsChart = () => {
         config={chartConfig}
         className="max-h-[300px] min-h-[200px] w-full rounded-md bg-white dark:bg-zinc-900"
       >
-        <BarChart accessibilityLayer data={totalExpenses}>
+        <BarChart
+          accessibilityLayer
+          data={lastWeekSpendings.map((spending) => ({
+            date: spending.date.toDateString(),
+            amount: spending.amount,
+          }))}
+        >
           <XAxis
             dataKey="date"
             tickLine={false}

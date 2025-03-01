@@ -44,6 +44,36 @@ export const getUserRecentSpendings = async (userId: string) => {
   return spendings satisfies Spending[];
 };
 
+export const getUserMonthlySpendingsAmount = async (userId: string) => {
+  const client = prisma;
+  const date = new Date();
+  const spendings = await client.spending.findMany({
+    where: {
+      userId,
+      date: {
+        gte: new Date(date.getFullYear(), date.getMonth(), 1),
+        lt: new Date(date.getFullYear(), date.getMonth() + 1, 1),
+      },
+    },
+  });
+  return spendings.reduce((sum, spending) => sum + spending.amount, 0);
+};
+
+export const getUserLastWeekSpendings = async (userId: string) => {
+  const client = prisma;
+  const date = new Date();
+  const spendings = await client.spending.findMany({
+    where: {
+      userId,
+      date: {
+        gte: new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7),
+        lt: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+      },
+    },
+  });
+  return spendings satisfies Spending[];
+};
+
 export const createSpending = async (
   formData: z.infer<typeof newSpendingSchema>,
 ) => {

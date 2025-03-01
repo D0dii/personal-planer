@@ -1,7 +1,3 @@
-"use client";
-
-import React from "react";
-
 import {
   Table,
   TableBody,
@@ -17,7 +13,6 @@ export const UpcomingEvents = ({
 }: {
   upcomingEvents: Event[];
 }) => {
-  console.log(upcomingEvents);
   return upcomingEvents.length === 0 ? (
     <div className="flex w-full flex-col gap-1">
       <h2 className="text-3xl">Upcoming events</h2>
