@@ -2,7 +2,6 @@
 
 import React from "react";
 
-import { LoadingSkeleton } from "@/components/loading-skeleton";
 import {
   Table,
   TableBody,
@@ -11,21 +10,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { changeIsoDateToNormalFormat } from "@/helpers/change-iso-date-to-normal";
-import { getUpcomingEvents } from "@/helpers/get-upcoming-events";
 import { Event } from "@/types/event";
 
-export const UpcomingEvents = () => {
-  const [upcomingEvents, setUpcomingEvents] = React.useState([] as Event[]);
-  const [loading, setLoading] = React.useState(true);
-  React.useEffect(() => {
-    const events = getUpcomingEvents();
-    setUpcomingEvents(events);
-    setLoading(false);
-  }, []);
-  if (loading) {
-    return <LoadingSkeleton />;
-  }
+export const UpcomingEvents = ({
+  upcomingEvents,
+}: {
+  upcomingEvents: Event[];
+}) => {
+  console.log(upcomingEvents);
   return upcomingEvents.length === 0 ? (
     <div className="flex w-full flex-col gap-1">
       <h2 className="text-3xl">Upcoming events</h2>
@@ -60,7 +52,15 @@ export const UpcomingEvents = () => {
           {upcomingEvents.map((event) => (
             <TableRow key={event.id} className="border-0">
               <TableCell>{event.title}</TableCell>
-              <TableCell>{changeIsoDateToNormalFormat(event.start)}</TableCell>
+              <TableCell>
+                {event.start.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "numeric",
+                  minute: "numeric",
+                })}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

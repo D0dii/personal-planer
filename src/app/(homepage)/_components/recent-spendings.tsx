@@ -2,7 +2,6 @@
 
 import React from "react";
 
-import { LoadingSkeleton } from "@/components/loading-skeleton";
 import {
   Table,
   TableBody,
@@ -11,24 +10,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { changeIsoDateToNormalFormat } from "@/helpers/change-iso-date-to-normal";
-import { getRecentExpenses } from "@/helpers/get-recent-spendings";
 import { Spending } from "@/types/spending";
 
-export const RecentSpendings = () => {
-  const [recentExpenses, setRecentExpenses] = React.useState([] as Spending[]);
-  const [loading, setLoading] = React.useState(true);
-  React.useEffect(() => {
-    const expenses = getRecentExpenses();
-    setRecentExpenses(expenses);
-    setLoading(false);
-  }, []);
-
-  if (loading) {
-    return <LoadingSkeleton />;
-  }
-
-  return recentExpenses.length === 0 ? (
+export const RecentSpendings = ({
+  recentSpendings,
+}: {
+  recentSpendings: Spending[];
+}) => {
+  return recentSpendings.length === 0 ? (
     <div className="w-100 flex w-full flex-col gap-1">
       <h2 className="text-3xl">Recent spendings</h2>
       <Table>
@@ -60,13 +49,19 @@ export const RecentSpendings = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {recentExpenses.map((expense) => (
-            <TableRow key={expense.id} className="border-0">
-              <TableCell>{expense.description}</TableCell>
+          {recentSpendings.map((spending) => (
+            <TableRow key={spending.id} className="border-0">
+              <TableCell>{spending.description}</TableCell>
               <TableCell>
-                {changeIsoDateToNormalFormat(expense.createdAt)}
+                {spending.createdAt.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "numeric",
+                  minute: "numeric",
+                })}
               </TableCell>
-              <TableCell className="text-right">{expense.amount}</TableCell>
+              <TableCell className="text-right">{spending.amount}</TableCell>
             </TableRow>
           ))}
         </TableBody>

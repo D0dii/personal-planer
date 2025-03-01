@@ -30,6 +30,20 @@ export const getUserSpendingsOnDate = async (userId: string, date: Date) => {
   return spendings satisfies Spending[];
 };
 
+export const getUserRecentSpendings = async (userId: string) => {
+  const client = prisma;
+  const spendings = await client.spending.findMany({
+    where: {
+      userId,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 5,
+  });
+  return spendings satisfies Spending[];
+};
+
 export const createSpending = async (
   formData: z.infer<typeof newSpendingSchema>,
 ) => {

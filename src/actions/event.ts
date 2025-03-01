@@ -16,6 +16,23 @@ export const getUserEvents = async (userId: string) => {
   return events satisfies Event[];
 };
 
+export const getUserUpcomingEvents = async (userId: string) => {
+  const client = prisma;
+  const events = await client.event.findMany({
+    where: {
+      userId,
+      start: {
+        gte: new Date(),
+      },
+    },
+    orderBy: {
+      start: "asc",
+    },
+    take: 5,
+  });
+  return events satisfies Event[];
+};
+
 export const createEvent = async (formData: z.infer<typeof newEventSchema>) => {
   const client = prisma;
   const { title, start, end, userId } = formData;
