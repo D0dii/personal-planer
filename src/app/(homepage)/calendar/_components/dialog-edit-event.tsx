@@ -24,8 +24,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getTimeForEvent } from "@/helpers/get-time-for-event";
-import { newEventSchema } from "@/lib/zod";
 import { Event } from "@/types/event";
 
 import { TimePicker } from "./time-picker";

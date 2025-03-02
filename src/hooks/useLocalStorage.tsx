@@ -9,17 +9,17 @@ export const useLocalStorage = <T,>(key: string, defaultValue: T) => {
     const itemFromStorage = localStorage.getItem(key);
     if (itemFromStorage) {
       const parsedItemFromStorage = JSON.parse(itemFromStorage);
-      const newItems: any = [];
+      const newItems = [];
       for (const item of parsedItemFromStorage) {
         const newItem = { ...item };
-        for (let key in newItem) {
+        for (const key in newItem) {
           if (DATE_KEYS.includes(key)) {
             newItem[key] = new Date(newItem[key]);
           }
         }
         newItems.push(newItem);
       }
-      setValue(newItems);
+      setValue(newItems as T);
     } else {
       setValue(defaultValue);
     }

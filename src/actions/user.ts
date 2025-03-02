@@ -52,7 +52,7 @@ export const signUpAction = async ({
 
 export const signInAction = async (formData: z.infer<typeof signInSchema>) => {
   try {
-    const user = await signIn("credentials", { ...formData, redirect: false });
+    await signIn("credentials", { ...formData, redirect: false });
     return "Success";
   } catch (error) {
     if (error instanceof CustomAuthError) {

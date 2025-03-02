@@ -1,7 +1,6 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import "next-auth/jwt";
-import { DefaultJWT } from "next-auth/jwt";
 
 import prisma from "@/lib/db";
 

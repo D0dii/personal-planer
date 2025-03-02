@@ -84,7 +84,7 @@ export default function SignInForm() {
             )}
           />
           <div className="flex items-center justify-between">
-            <Link href="/signup">Don't have an account? Sign up</Link>
+            <Link href="/signup">Don&apos;t have an account? Sign up</Link>
             <Button type="submit" disabled={form.formState.isSubmitting}>
               Submit
             </Button>

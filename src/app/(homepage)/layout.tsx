@@ -30,7 +30,7 @@ export default function RootLayout({
             <main className="w-full bg-gray-300 px-5 dark:bg-black">
               {children}
             </main>
-            {/* <Footer /> */}
+            <Footer />
           </ThemeProvider>
         </body>
       </SessionProvider>

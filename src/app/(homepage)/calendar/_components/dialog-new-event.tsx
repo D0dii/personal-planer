@@ -13,8 +13,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { getTimeForEvent } from "@/helpers/get-time-for-event";
-import { newEventSchema } from "@/lib/zod";
 import { Event } from "@/types/event";
 
 import { TimePicker } from "./time-picker";
