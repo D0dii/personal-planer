@@ -2,7 +2,12 @@
 
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
-import { ChartConfig, ChartContainer } from "@/components/ui/chart";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import { Spending } from "@/types/spending";
 
 const chartConfig = {
@@ -28,9 +33,10 @@ export const WeeklySpendingsChart = ({
           accessibilityLayer
           data={lastWeekSpendings.map((spending) => ({
             date: spending.date.toDateString(),
-            amount: spending.amount,
+            Amount: spending.amount,
           }))}
         >
+          <ChartTooltip content={<ChartTooltipContent />} />
           <XAxis
             dataKey="date"
             tickLine={false}
@@ -38,7 +44,7 @@ export const WeeklySpendingsChart = ({
             axisLine={false}
           />
           <YAxis />
-          <Bar dataKey="amount" fill="var(--color-desktop)" radius={4} />
+          <Bar dataKey="Amount" fill="var(--color-desktop)" radius={4} />
         </BarChart>
       </ChartContainer>
     </div>
