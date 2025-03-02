@@ -1,9 +1,7 @@
-const Footer = () => {
+export const Footer = () => {
   return (
-    <footer className="mt-auto pb-4 text-center">
-      <p>Personal Planer</p>
+    <footer className="">
+      <p className="p-4 text-center">&copy; 2025 Personal Planer</p>
     </footer>
   );
 };
-
-export { Footer };

@@ -1,7 +1,7 @@
-import { Spending } from "@/app/types/spending";
-import { SpendingDay } from "@/app/types/spending-day";
+import { Spending } from "@/types/spending";
+import { SpendingDay } from "@/types/spending-day";
 
-const getLastWeekExpenses = () => {
+export const getLastWeekExpenses = () => {
   const today = new Date();
   const totalExpenses: SpendingDay[] = [];
 
@@ -21,5 +21,3 @@ const getLastWeekExpenses = () => {
 
   return totalExpenses;
 };
-
-export { getLastWeekExpenses };

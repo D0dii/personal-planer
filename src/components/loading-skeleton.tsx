@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-function LoadingSkeleton() {
+export const LoadingSkeleton = () => {
   return (
     <Table className="rounded-lg bg-white dark:bg-zinc-900">
       <TableHeader>
@@ -41,6 +41,4 @@ function LoadingSkeleton() {
       </TableBody>
     </Table>
   );
-}
-
-export { LoadingSkeleton };
+};
