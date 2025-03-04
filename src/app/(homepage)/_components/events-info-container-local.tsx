@@ -1,5 +1,6 @@
 "use client";
 
+import { BlockLoadingSkeleton } from "@/components/block-loading-skeleton";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { Event } from "@/types/event";
 
@@ -11,7 +12,7 @@ export const EventsInfoContainerLocal = () => {
     [],
   );
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <BlockLoadingSkeleton />;
   }
 
   return <EventsInfo eventsCount={events.length} />;

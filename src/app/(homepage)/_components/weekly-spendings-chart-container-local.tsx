@@ -1,5 +1,6 @@
 "use client";
 
+import { BlockLoadingSkeleton } from "@/components/block-loading-skeleton";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { Spending } from "@/types/spending";
 
@@ -11,7 +12,7 @@ export const WeeklySpendingsChartContainerLocal = () => {
     [],
   );
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <BlockLoadingSkeleton height={28} />;
   }
   return (
     <WeeklySpendingsChart

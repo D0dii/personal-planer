@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 
 import { auth } from "@/auth";
+import { BlockLoadingSkeleton } from "@/components/block-loading-skeleton";
 import { LoadingSkeleton } from "@/components/loading-skeleton";
 
 import { EventsInfoContainerLocal } from "./_components/events-info-container-local";
@@ -34,14 +35,16 @@ export default async function HomePage() {
           </Suspense>
         </div>
         <div className="flex w-full flex-col gap-6 lg:flex-row lg:gap-20">
-          <Suspense fallback={<LoadingSkeleton />}>
+          <Suspense fallback={<BlockLoadingSkeleton />}>
             <EventsInfoContainerServer user={session.user} />
           </Suspense>
-          <Suspense fallback={<LoadingSkeleton />}>
+          <Suspense fallback={<BlockLoadingSkeleton />}>
             <SpendingsInfoContainerServer user={session.user} />
           </Suspense>
         </div>
-        <WeeklySpendingsChartContainerServer user={session.user} />
+        <Suspense fallback={<BlockLoadingSkeleton height={28} />}>
+          <WeeklySpendingsChartContainerServer user={session.user} />
+        </Suspense>
       </div>
     );
   }

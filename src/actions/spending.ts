@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import prisma from "@/lib/db";
@@ -91,6 +92,8 @@ export const createSpending = async (
       },
     },
   });
+  revalidatePath("/");
+  revalidatePath("/spendings");
   return spending satisfies Spending;
 };
 
@@ -109,6 +112,8 @@ export const deleteSpending = async (spendingId: string) => {
       id: spendingId,
     },
   });
+  revalidatePath("/");
+  revalidatePath("/spendings");
   return spending satisfies Spending;
 };
 
@@ -125,5 +130,7 @@ export const updateSpending = async (
       ...formData,
     },
   });
+  revalidatePath("/");
+  revalidatePath("/spendings");
   return spending satisfies Spending;
 };

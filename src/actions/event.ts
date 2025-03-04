@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import prisma from "@/lib/db";
@@ -49,6 +50,8 @@ export const createEvent = async (formData: z.infer<typeof newEventSchema>) => {
       },
     },
   });
+  revalidatePath("/");
+  revalidatePath("/events");
   return event satisfies Event;
 };
 
@@ -59,6 +62,8 @@ export const deleteEvent = async (eventId: string) => {
       id: eventId,
     },
   });
+  revalidatePath("/");
+  revalidatePath("/events");
   return event satisfies Event;
 };
 
@@ -75,5 +80,7 @@ export const updateEvent = async (
       ...formData,
     },
   });
+  revalidatePath("/");
+  revalidatePath("/events");
   return event satisfies Event;
 };
