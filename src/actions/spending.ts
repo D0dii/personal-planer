@@ -63,7 +63,11 @@ export const getUserMonthlySpendingsAmount = async (userId: string) => {
 export const getUserLastWeekSpendings = async (userId: string) => {
   const client = prisma;
   const date = new Date();
-  const spendings = await client.spending.findMany({
+  const spendings = await client.spending.groupBy({
+    by: ["date"],
+    _sum: {
+      amount: true,
+    },
     where: {
       userId,
       date: {
@@ -71,8 +75,14 @@ export const getUserLastWeekSpendings = async (userId: string) => {
         lt: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
       },
     },
+    orderBy: {
+      date: "asc",
+    },
   });
-  return spendings satisfies Spending[];
+  return spendings.map((spending) => ({
+    ...spending,
+    amount: spending._sum.amount,
+  }));
 };
 
 export const createSpending = async (
