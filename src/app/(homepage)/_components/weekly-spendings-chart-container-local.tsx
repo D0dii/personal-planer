@@ -40,7 +40,7 @@ export const WeeklySpendingsChartContainerLocal = () => {
   }, [groupedSpendings]);
 
   if (isLoading) {
-    return <BlockLoadingSkeleton height={"chart-loading"} />;
+    return <BlockLoadingSkeleton height={220} />;
   }
 
   return <WeeklySpendingsChart lastWeekSpendings={spendingSummary} />;
