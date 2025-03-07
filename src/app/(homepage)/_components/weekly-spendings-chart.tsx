@@ -25,7 +25,7 @@ export const WeeklySpendingsChart = ({
     <div className="flex w-full flex-col gap-1">
       <h2 className="text-3xl">Your last week spendings</h2>
       {lastWeekSpendings.length === 0 ? (
-        <div className="flex h-[250px] w-full items-center justify-center rounded-md bg-white dark:bg-zinc-900">
+        <div className="flex h-[300px] w-full items-center justify-center rounded-md bg-white dark:bg-zinc-900">
           <h2 className="text-center text-2xl">
             No spendings found for the last week
           </h2>

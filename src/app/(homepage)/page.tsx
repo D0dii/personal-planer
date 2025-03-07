@@ -42,7 +42,7 @@ export default async function HomePage() {
             <SpendingsInfoContainerServer user={session.user} />
           </Suspense>
         </div>
-        <Suspense fallback={<BlockLoadingSkeleton height={28} />}>
+        <Suspense fallback={<BlockLoadingSkeleton height={"chart-loading"} />}>
           <WeeklySpendingsChartContainerServer user={session.user} />
         </Suspense>
       </div>

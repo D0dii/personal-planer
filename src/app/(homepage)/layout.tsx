@@ -27,7 +27,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Navbar />
-            <main className="w-full bg-gray-300 px-5 dark:bg-black">
+            <main className="min-h-[83vh] w-full bg-gray-300 px-5 dark:bg-black">
               {children}
             </main>
             <Footer />

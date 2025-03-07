@@ -61,7 +61,7 @@ export const SpendingsContainerLocal = () => {
     );
   };
   return (
-    <div className="flex w-full flex-col items-center py-6 md:px-12">
+    <div className="flex w-full flex-col items-center py-4 md:px-12">
       <h1 className="mb-8 text-5xl">List of your todays spendings</h1>
       <div className="flex w-full flex-col justify-center lg:flex-row">
         <div className="flex w-full flex-col items-center gap-8">
